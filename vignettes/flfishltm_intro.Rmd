@@ -1,0 +1,201 @@
+---
+title: "flfishltm"
+author: Jason O'Connor
+date: "2021-07-07"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{flfishltm}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning=FALSE,
+  message=FALSE,
+  results = 'hide'
+)
+```
+
+This is a quick start guide for using the 'flfishltm' package. This example assumes 
+that you've already successfully installed the package.
+
+First, load the package into your current R session using:
+```{r setup}
+library(flfishltm) # load 'flfishltm' package
+```
+
+In this example we'll use data from Newnans Lake community samples, which is included
+in the package and can be loaded using data(). 
+```{r}
+data(newnans) # read in newnans dataset
+head(newnans,2) # view first two rows of the newnans data
+```
+
+All raw data should first be run through LTM_data_Summary(). This function 
+formats the columns in the data in a consistent way, creates a number of summary
+tables, and creates a CPUE timeseries plot for each species in the dataset. All 
+other functions are designed to run off the output of the LTM_data_Summary().
+
+```{r}
+newn_sum <- ltm.data.summary("Newnans Lake", newnans, 
+                             outtables = 0, printfigs = 0) 
+```
+
+Here we've saved the output of the summary function to 'newn_sum'. Setting the
+outtables and printfigs to 0 prevents the function from saving summary tables or
+figures to the working directory. If you wanted to save the output, change those values
+to 1 for all output. 
+
+LTM_data_Summary returns a list() object, containing the raw data, along with a 
+number of summary tables. Elements within the output can be accessed using the 
+'$' operator.
+```{r eval=FALSE}
+newn_sum$CPUE_number # summary of cpue by year and species
+newn_sum$Year_Sites # number of sites sampled each year
+newn_sum$annual_summary # Creates a table similar to the excel 'fish button'
+# macro, using data from the most recent year in the dataset
+```
+
+Now we can use 'newn_sum' to produce a number of summary figures. 
+
+First lets look at the species collection history for Newnans Lake. 
+```{r fig.height=7,fig.width=7, fig.align='center', results='hide', warning=FALSE, message=FALSE}
+newn_dethist <- species.history(newn_sum)
+```
+
+  This figure provides a useful broadscale look at the community composition in Newnans Lake and allows you to easily pick out unusual or rare occurences. For instance we can see that Fliers and Chain Pickerel have only been collected once, in 2010 and sailfin molly were collected for the first time in 2020 since 2012. 
+
+Next let's create some cpue timeseries plots for species of interest. Here we'll take a look at the CPUE trend of common sportfish species in Newnans Lake: Bluegill, Redear Sunfish, Black Crappie, and Largemouth Bass.
+```{r fig.height=6, fig.width = 7, fig.align='center'}
+newn_sport_cpue <- cpue.plot(newn_sum,
+                                     speciesList = c("BLUE",
+                                                     "Redear Sunfish", 
+                                                     "Pomoxis nigromaculatus",
+                                                     "LMB"), 
+                                     fig_scale=4)
+```
+Notice that species in the speciesList can be specified by scientifc, common, or code name. 
+
+If we wanted to zoom in on the last 4 years of we could specify the year range with the 'years' argument
+```{r fig.height=6, fig.width = 7, fig.align='center'}
+newn_sport_cpue <- cpue.plot(newn_sum, 
+                                     speciesList = c("BLUE",
+                                                     "Redear Sunfish",
+                                                     "Pomoxis nigromaculatus",
+                                                     "LMB"), 
+                                     years = c(2017:2020),
+                                     fig_scale=4)
+```
+
+We can also specify size classes of interest using the 'species_size_class' argument, which takes a list containing one list of size classes per species for which size classes are desired. Species-lists should be specified by naming them using the SpeciesCode, and size classes for each species can take any name desired.
+
+Here we will add size classes for young-of-year (<100 mm) and quality (>200 mm) sized bluegill and redear sunfish. We also will create quality (> 400 mm) size class for Largemouth Bass. We will not specifiy any size classes for Black Crappie  
+
+```{r fig.height=6, fig.width = 7, fig.align='center'}
+newn_sport_cpue <- cpue.plot(newn_sum, 
+                                     speciesList = c("BLUE",
+                                                     "Redear Sunfish",
+                                                     "Pomoxis nigromaculatus",
+                                                     "LMB"),
+                                     species_size_strata = list(
+                                       BLUE = list(
+                                         YOY = c(0,10), #considering all 
+      # individuals between 0 and 10 cm as YOY. 
+                                         Qual = c(20,100) #size ranges specified
+      # in cm,here I selected an unrealistically high upper limit just to make 
+      # sure that I don't have to worry about accidently excluding large individuals.
+                                       ),
+                                       RESU = list(
+                                         YOY = c(0,10),
+                                         Qual = c(20,100)
+                                       ),
+                                       LMB = list(
+                                         Qual = c(40,100)
+                                       )
+                                     ),
+                                     years = c(2017:2020), 
+                                     fig_scale=4)
+```
+Notice that if size ranges are specified for a species, any sizes not included in the specified ranges will not be included in the output plot. So bluegill/redear between 10 and 20 cm are not displayed and LMB < 40 cm are not displayed. No size ranges for Black Crappie were specified so CPUE of all sizes is shown.
+
+The syntax for specifiying sizeclasses is complex, so be careful with commas and parentheses. 
+
+Here we can see that the increase in Bluegill CPUE in 2020 was driven largely by YOY sizes. It looks like quality sized bluegill may actually have decreased a bit, but this pattern is difficult to see because of the difference in magnitude between the YOY and quality CPUE. Let zoom in on this pattern by removing other species and the YOY Bluegill. 
+```{r fig.height=6, fig.width = 7, fig.align='center'}
+newn_sport_cpue <- cpue.plot(newn_sum, 
+                                     speciesList = c("BLUE"),# removed LMB,RESU,BLCR
+                                     species_size_strata = list(
+                                       BLUE = list(
+                                         #YOY = c(0,10), 
+                                         #I quickly removed YOY 
+                                         #here by commenting out this sizeclass.
+                                         #Could have deleted the YOY class 
+                                         #altogether,but this allows me to quickly
+                                         #add that size class back in if I wanted 
+                                         #by removing the hash. 
+                                         Qual = c(20,100) 
+                                       ),
+                                       RESU = list(        
+                                         # could have removed 
+                                         #the size classes for other species, 
+                                           #but not necessary
+                                         YOY = c(0,10),
+                                         Qual = c(20,100)
+                                       ),
+                                       LMB = list(
+                                         Qual = c(40,100)
+                                       )
+                                     ),
+                                     years = c(2017:2020), 
+                                     fig_scale=4)
+```
+
+From this figure it is much more clear that the CPUE of quality sized Bluegill
+was lower in 2020 than in 2019. 
+
+We can also look at the size structure of the sportfish using the len.dist()
+function. Species and years are specified similarly to the previous function
+
+```{r fig.height=7, fig.width = 7, fig.align='center'}
+newn_sport_ld <- len.dist(newn_sum,
+                              speciesList = c("BLUE",
+                                              "RESU",
+                                              "LMB",
+                                              "BLCR"),
+                              years = c(2017:2020),
+                              fig_scale = 2)
+```
+
+The length distributions of Black Crappie and Largemouth Bass are somewhat 
+sparse due to low catch rates, lets take them out and switch in Brown Bullhead
+
+```{r fig.height=7, fig.width = 6, fig.align='center'}
+newn_sport_ld <- len.dist(newn_sum,
+                              speciesList = c("BLUE",
+                                              "RESU",
+                                              "BRBU"
+                                              #"LMB",
+                                              #"BLCR"
+                                              ),
+                              years = c(2017:2020),
+                              fig_scale = 2)
+```
+
+We can use the guild_comp function we can easily export guild composition 
+figures for annual reports.
+
+```{r fig.height=5, fig.width = 6, fig.align='center'}
+newn_guild <- guild.comp(newn_sum, years = c(2006:2020))
+  
+```
+
+
+  For more information on package functions see function help documentation:
+```{r eval=FALSE}
+?len.dist
+# or equivalently
+help(len.dist)
+```

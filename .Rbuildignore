@@ -1,0 +1,6 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+^Meta$
+data/*.csv
+^doc$
