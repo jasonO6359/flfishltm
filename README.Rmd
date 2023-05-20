@@ -1,0 +1,90 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# flfishltm <img src="man/figures/logo.png" align="right" height="139" />
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+This package provides functions to assist with summarizing, analyzing,
+visualizing, and reporting freshwater fish population monitoring data.
+
+## Installation
+
+Add `flffishltm` repository to package repository list. 
+
+```{r}
+options(repos = c(
+          flfishltm = "https://jasono6359.r-universe.dev",
+          CRAN = "https://cloud.r-project.org"))
+```
+
+To add a persistent reference to the repository you can add the above code to your
+.Rprofile file. To quickly open and edit .Rprofile use:
+
+```{r eval=FALSE}
+usethis::edit_r_profile(scope = "user")
+```
+
+Once the repository has been referenced, `flfishltm` can be installed using
+
+```{r eval=FALSE}
+install.packages("flfishltm")
+```
+
+
+## Example
+
+Load package
+
+```{r example}
+library(flfishltm)
+## basic example code
+```
+
+Create data summary tables
+
+```{r cars, echo=TRUE, results="hide"}
+newn_sum <- ltm.data.summary("Newnans", newnans)
+```
+
+Access summary tables
+
+```{r}
+names(newn_sum)
+head(newn_sum$CPUE_number)
+newn_sum$Year_Sites
+```
+
+create cpue plot and subset by species and size class
+
+```{r message=FALSE,warning=FALSE}
+cpue.plot(newn_sum, speciesList = c("BLUE", "RESU"))
+```
+
+## Additional Help
+
+For help see function help documentation.
+
+```{r eval=FALSE}
+?cpue.plot
+
+# or
+
+help(cpue.plot)
+```
+
+See [intro vignette](vignettes/flfishltm_intro.Rmd) for more information.
+Source code available on [github](https://github.com/jasono6359/flfishltm)
