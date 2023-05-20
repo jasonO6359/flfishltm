@@ -173,6 +173,11 @@ For help see function help documentation.
 help(cpue.plot)
 ```
 
-See [intro vignette](vignettes/flfishltm_intro.Rmd) for more
-information. Source code available on
+Check out the intro vignette for more examples
+
+``` r
+RShowDoc("flfishltm_intro", type = "html", package = "flfishltm")
+```
+
+Source code available on
 [github](https://github.com/jasono6359/flfishltm)
