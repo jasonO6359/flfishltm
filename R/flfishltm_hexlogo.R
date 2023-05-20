@@ -1,4 +1,4 @@
-library(flfishltm)
+#library(flfishltm)
 library(ggplot2)
 library(hexSticker)
 library(magick)
@@ -6,18 +6,18 @@ library(magick)
 sysfonts::font_add_google("Righteous")
 showtext::showtext_auto()
 
-plt <- cpue.plot(newn_sum, 
+plt <- cpue.plot(newn_sum,
                  speciesList = "BLUE")
-plt <- len.dist(newn_sum, 
+plt <- len.dist(newn_sum,
                 speciesList = "BLUE",
                 year = 2009)
 axcol = "#0e2a30"
-p <- ggplot(data = plt, aes(x = TL_CM_Group, y = percent)) + 
+p <- ggplot(data = plt, aes(x = TL_CM_Group, y = percent)) +
   geom_bar(stat = "identity", just = 0, width=1, fill = axcol, color = axcol) +
   coord_cartesian(expand = FALSE) +
-  theme_classic() + 
+  theme_classic() +
   labs(x = "Length", y = "Frequency") +
-  theme_transparent() + 
+  theme_transparent() +
   theme(axis.line = element_line(color = axcol),
         axis.ticks = element_line(color = axcol),
         axis.text = element_text(color = axcol),
@@ -26,9 +26,9 @@ print(p)
 
 sub_wid = 1.5
 sub_ht = sub_wid*2/3
-sticker(p, 
+sticker(p,
         package="flfishltm",
-        s_width = sub_wid, 
+        s_width = sub_wid,
         p_family = "Righteous",
         p_size = 24,
         p_color = "#006a4e",
