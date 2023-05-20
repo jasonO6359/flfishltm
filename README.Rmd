@@ -57,6 +57,7 @@ library(flfishltm)
 Create data summary tables
 
 ```{r cars, echo=TRUE, results="hide"}
+data(newnans)
 newn_sum <- ltm.data.summary("Newnans", newnans)
 ```
 

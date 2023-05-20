@@ -1,12 +1,20 @@
 ---
-output: rmarkdown::html_vignette
+title: Introduction to flfishltm <img class="logo" src="../man/figures/logo.png" align="right" height="139" />
+output:
+  rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{flfishltm}
+  %\VignetteIndexEntry{flfishltm_intro}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-# Introduction to flfishltm <img src="../man/figures/logo.png" align="right" height="139" />
+```{css, echo=FALSE}
+.logo {
+  border: 0px solid black;
+}
+```
+
+--- 
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
