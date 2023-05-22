@@ -4,3 +4,5 @@
 ^Meta$
 data/*.csv
 ^doc$
+^README\.Rmd$
+^R/flfishltm_hexlogo\.R$

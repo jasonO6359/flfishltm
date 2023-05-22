@@ -1,13 +1,20 @@
 ---
-title: "flfishltm"
-author: Jason O'Connor
-date: "2021-07-07"
-output: rmarkdown::html_vignette
+title: Introduction to flfishltm <img class="logo" src="../man/figures/logo.png" align="right" height="139" />
+output:
+  rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{flfishltm}
+  %\VignetteIndexEntry{flfishltm_intro}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+```{css, echo=FALSE}
+.logo {
+  border: 0px solid black;
+}
+```
+
+--- 
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -19,8 +26,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-This is a quick start guide for using the 'flfishltm' package. This example assumes 
-that you've already successfully installed the package.
+This is a quick start guide for using the `flfishltm` package. This example assumes 
+that you've already successfully installed the package. Find [installation instructions here](https://github.com/jasonO6359/flfishltm/blob/main/README.md).
+
+---
+
+## Getting started
 
 First, load the package into your current R session using:
 ```{r setup}
@@ -28,16 +39,16 @@ library(flfishltm) # load 'flfishltm' package
 ```
 
 In this example we'll use data from Newnans Lake community samples, which is included
-in the package and can be loaded using data(). 
+in the package and can be loaded using `data()`. 
 ```{r}
 data(newnans) # read in newnans dataset
 head(newnans,2) # view first two rows of the newnans data
 ```
 
-All raw data should first be run through LTM_data_Summary(). This function 
+All raw data should first be run through `ltm.data.summary()`. This function 
 formats the columns in the data in a consistent way, creates a number of summary
 tables, and creates a CPUE timeseries plot for each species in the dataset. All 
-other functions are designed to run off the output of the LTM_data_Summary().
+other functions are designed to run off the output of the `ltm.data.summary()`.
 
 ```{r}
 newn_sum <- ltm.data.summary("Newnans Lake", newnans, 
@@ -49,7 +60,7 @@ outtables and printfigs to 0 prevents the function from saving summary tables or
 figures to the working directory. If you wanted to save the output, change those values
 to 1 for all output. 
 
-LTM_data_Summary returns a list() object, containing the raw data, along with a 
+`ltm.data.summary()` returns a list() object, containing the raw data, along with a 
 number of summary tables. Elements within the output can be accessed using the 
 '$' operator.
 ```{r eval=FALSE}
@@ -61,12 +72,16 @@ newn_sum$annual_summary # Creates a table similar to the excel 'fish button'
 
 Now we can use 'newn_sum' to produce a number of summary figures. 
 
+## Species Collection History
+
 First lets look at the species collection history for Newnans Lake. 
 ```{r fig.height=7,fig.width=7, fig.align='center', results='hide', warning=FALSE, message=FALSE}
 newn_dethist <- species.history(newn_sum)
 ```
 
   This figure provides a useful broadscale look at the community composition in Newnans Lake and allows you to easily pick out unusual or rare occurences. For instance we can see that Fliers and Chain Pickerel have only been collected once, in 2010 and sailfin molly were collected for the first time in 2020 since 2012. 
+
+## CPUE timeseries
 
 Next let's create some cpue timeseries plots for species of interest. Here we'll take a look at the CPUE trend of common sportfish species in Newnans Lake: Bluegill, Redear Sunfish, Black Crappie, and Largemouth Bass.
 ```{r fig.height=6, fig.width = 7, fig.align='center'}
@@ -121,7 +136,7 @@ newn_sport_cpue <- cpue.plot(newn_sum,
 ```
 Notice that if size ranges are specified for a species, any sizes not included in the specified ranges will not be included in the output plot. So bluegill/redear between 10 and 20 cm are not displayed and LMB < 40 cm are not displayed. No size ranges for Black Crappie were specified so CPUE of all sizes is shown.
 
-The syntax for specifiying sizeclasses is complex, so be careful with commas and parentheses. 
+The syntax for specifying size classes is complex, so be careful with commas and parentheses. 
 
 Here we can see that the increase in Bluegill CPUE in 2020 was driven largely by YOY sizes. It looks like quality sized bluegill may actually have decreased a bit, but this pattern is difficult to see because of the difference in magnitude between the YOY and quality CPUE. Let zoom in on this pattern by removing other species and the YOY Bluegill. 
 ```{r fig.height=6, fig.width = 7, fig.align='center'}
@@ -156,7 +171,9 @@ newn_sport_cpue <- cpue.plot(newn_sum,
 From this figure it is much more clear that the CPUE of quality sized Bluegill
 was lower in 2020 than in 2019. 
 
-We can also look at the size structure of the sportfish using the len.dist()
+## Length Distribution
+
+We can also look at the size structure of the sportfish using the `len.dist()`
 function. Species and years are specified similarly to the previous function
 
 ```{r fig.height=7, fig.width = 7, fig.align='center'}
@@ -184,6 +201,8 @@ newn_sport_ld <- len.dist(newn_sum,
                               fig_scale = 2)
 ```
 
+## Guild Composition
+
 We can use the guild_comp function we can easily export guild composition 
 figures for annual reports.
 
@@ -192,8 +211,9 @@ newn_guild <- guild.comp(newn_sum, years = c(2006:2020))
   
 ```
 
+## Additional Help
 
-  For more information on package functions see function help documentation:
+For more information on package functions see function help documentation:
 ```{r eval=FALSE}
 ?len.dist
 # or equivalently
