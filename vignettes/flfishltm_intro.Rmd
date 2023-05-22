@@ -27,7 +27,7 @@ knitr::opts_chunk$set(
 ```
 
 This is a quick start guide for using the `flfishltm` package. This example assumes 
-that you've already successfully installed the package. Find [installation instructions here](https://github.com/jasonO6359/flfishltm/blob/main/README.md).
+that you've already successfully installed the package. Find [installation instructions here](install.html).
 
 ---
 

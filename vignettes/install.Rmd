@@ -1,0 +1,49 @@
+---
+title: "How to install and update `flfishltm`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{How to install and update `flfishltm`}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Installation
+
+`flfishltm` is stored in a custom repository on r-universe.dev, not the default CRAN repository. Therefore to use the standard `install.packages()` function, you must reference the `flfishltm` repository which is located at [https://jasono6359.r-universe.dev](https://jasono6359.r-universe.dev). 
+
+```{r eval=FALSE}
+install.packages("flfishltm", repos = "https://jasono6359.r-universe.dev")
+```
+
+To ease updating the package in the future, we recommend storing a persistent reference to the repository in in your user .Rprofile. This way the repository is available every time you start a new R session. To do this first call:
+
+```{r eval=FALSE}
+usethis::edit_r_profile(scope = "user")
+```
+
+This will open your .Rprofile file. Then copy and paste the following into your .Rprofile: 
+
+```{r eval=FALSE}
+local({
+  options(repos = 
+            c(flfishltm = "https://jasono6359.r-universe.dev",
+              CRAN = "https://cloud.r-project.org"))})
+
+```
+
+Then save and close .Rprofile. 
+
+Now restart your r session, if using Rstudio you can simply hit ctrl + shift + F10. Then you can check that the repository reference has been saved by running:
+
+```{r eval=FALSE}
+install.packages("flfishltm")
+```
+
+If this runs without error then the repository reference has been set and you can update your `flfishltm` package in the future by simply rerunning this command.
