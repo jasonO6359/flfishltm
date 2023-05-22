@@ -692,22 +692,38 @@ cpue.plot   <- function(datafile,
         require(stringr)
 
          if(length(speciesList) == 0) {stop("No species list")} else {species = speciesList}
-#         ###debug statements
-#   workingdat=newn$RawData
-#   species = c("Bluegill",
-#   "THSH",
-#   "MOSQ",
-#   "GOSH",
-#   "BRSI",
-#   "FGAR")
-#         ###
-          workingdat = datafile$RawData
+
+# Internal Functions -----------------------------------------------------------
+          internal_get_year <- function(data, date_field) {
+            formats <- 
+              data %>% 
+              pull({{ date_field }}) %>% 
+              lubridate::guess_formats(orders = c("mdy", "ymd")) %>% 
+              unique() %>% 
+              .[!stringr::str_detect(.,"O")]
+            
+            if(length(formats) > 1) {
+              cli::cli_abort("more than 1 date format detected")
+            } else if (formats[[1]] == "%m/%d/%Y") {
+              return(data %>%
+                       mutate(yr = lubridate::year(lubridate::mdy({{ date_field }}))) %>%
+                       pull(yr))
+            } else if (formats[[1]] == "%Y-%m-%d") {
+              return(data %>%
+                       mutate(yr = lubridate::year(lubridate::ymd({{ date_field }}))) %>%
+                       pull(yr))
+            } else {
+              cli::cli_abort("date format not recognized")
+            }
+            
+          }
+  
+# Process ---------------------------------------------------------------------  
+          workingdat <- 
+            datafile$RawData %>% 
+            mutate(Year = internal_get_year(., Date)) %>% 
+            mutate(SeasYr = base::paste0(Season,"-", Year))
           
-          #Create year variable
-          # 
-          workingdat$Year = as.numeric(substr(workingdat$Date, nchar(as.character(workingdat$Date)) - 3, nchar(as.character(workingdat$Date))))
-          # 
-          workingdat$SeasYr = base::paste0(workingdat$Season,"-",workingdat$Year)
           od = workingdat
           
           if(length(years)==0) {years = as.numeric(unique(workingdat$Year))}
