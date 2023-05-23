@@ -1148,6 +1148,9 @@ wid = ifelse(is.na(fig_width), length(unique(plotData$Year))*rs/1.75, fig_width)
       print(detection_plot)
       dev.off()
   }
+
+plotData
+
 }
 
 
