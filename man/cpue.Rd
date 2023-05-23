@@ -20,8 +20,8 @@ named vector containing "Mean CPUE" and "SE" estimates
 Calculate Mean Catch-per-unit Effort (CPUE)
 }
 \examples{
-fish_data <- tibble(BLUE = c(5.5, 2.3, 6.8, 4.5, 7.9,
-                             8.5, 6.9, 7.1, 2.3, 9.1),
+fish_data <- tibble(BLUE = c(5, 2, 6, 4, 7,
+                             8, 6, 7, 2, 9),
                     minutes = rep(10, 10))
 fish_data \%>\% 
   cpue("BLUE", "minutes")
