@@ -8,16 +8,14 @@
 #' @export
 #'
 #' @examples
-#' fish_data <- tibble(BLUE = c(5.5, 2.3, 6.8, 4.5, 7.9,
-#'                              8.5, 6.9, 7.1, 2.3, 9.1),
+#' fish_data <- tibble(BLUE = c(5, 2, 6, 4, 7,
+#'                              8, 6, 7, 2, 9),
 #'                     minutes = rep(10, 10))
 #' fish_data %>% 
 #'   cpue("BLUE", "minutes")
 #' 
 #' 
 cpue <- function(data, species, effort) {
- # sample_CPUE <- data[, c(species)] / data[, c(effort)]
-  
   data %>% 
     mutate(sample_CPUE = !!rlang::ensym(species)/!!rlang::ensym(effort))  %>%
     summarise("Mean CPUE" = mean(sample_CPUE),
