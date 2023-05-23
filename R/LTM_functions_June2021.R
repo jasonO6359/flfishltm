@@ -563,33 +563,57 @@ len.dist<- function(datafile,
   require(stringr)
   
   
-  if(length(speciesList) == 0) {species = datafile$SpeciesList} else {species = speciesList}
-  ###debug statements
-  ##workingdat=orange_all$RawData
-  ##species = c("LMB","BLUE", "Redear Sunfish", "Gambusia holbrooki")
-  ###
-  workingdat = datafile$RawData
- # print(base::paste("data rows:", nrow(workingdat)))
-  #Subset target species
- # print("subset target species")
-  workingdat = workingdat %>% dplyr::filter((SpeciesCode %in% species)|(SpeciesCommon %in% species)|(SpeciesScientific %in% species))
- 
-  #Create year variable
-  workingdat$Year = as.numeric(substr(workingdat$Date, nchar(as.character(workingdat$Date)) - 3, nchar(as.character(workingdat$Date))))
+  if(length(speciesList) == 0) {
+    species = datafile$SpeciesList
+  } else {
+      species = speciesList}
   
-  workingdat$SeasYr = base::paste0(workingdat$Season,"-",workingdat$Year)
-  #Subset out by years and seasons specified in function call arguments
- # print("Subset out years and seasons specified in function call")
+## internal functions ----------------------------------------------------------  
+  internal_get_year <- function(data, date_field) {
+    formats <- 
+      data %>% 
+      pull({{ date_field }}) %>% 
+      lubridate::guess_formats(orders = c("mdy", "ymd")) %>% 
+      unique() %>% 
+      .[!stringr::str_detect(.,"O")]
+    
+    if(length(formats) > 1) {
+      cli::cli_abort("more than 1 date format detected")
+    } else if (formats[[1]] == "%m/%d/%Y") {
+      return(data %>%
+               mutate(yr = lubridate::year(lubridate::mdy({{ date_field }}))) %>%
+               pull(yr))
+    } else if (formats[[1]] == "%Y-%m-%d") {
+      return(data %>%
+               mutate(yr = lubridate::year(lubridate::ymd({{ date_field }}))) %>%
+               pull(yr))
+    } else {
+      cli::cli_abort("date format not recognized")
+    }
+    
+  }
+  
+## Process ---------------------------------------------------------------------  
+  workingdat <- 
+    datafile$RawData %>% 
+    dplyr::filter((SpeciesCode %in% species) | 
+                  (SpeciesCommon %in% species)|
+                  (SpeciesScientific %in% species)) %>% 
+    mutate(Year = internal_get_year(., Date)) %>% 
+    mutate(SeasYr = base::paste0(Season,"-", Year))
+  
+
   if(length(years) != 0) {workingdat = workingdat[which(workingdat$Year %in% years), ]}
   if(length(seasons) != 0) { workingdat = workingdat[which(workingdat$Season %in% seasons), ]}
   
-  #dplyr::summarise count data
- #  print("Summarize count data")
-  workingsum = workingdat %>% dplyr::group_by(SpeciesCode, SeasYr, TL_CM_Group) %>% dplyr::summarise(Count = sum(Count, na.rm = TRUE))
-  # add in missing size classes
- # print(1)
+
+  workingsum = workingdat %>% 
+    dplyr::group_by(SpeciesCode, SeasYr, TL_CM_Group) %>% 
+    dplyr::summarise(Count = sum(Count, na.rm = TRUE))
+
+ 
   sl = unique(workingsum$SpeciesCode)
- # print(2)
+
   tbl = workingsum[-c(1:nrow(workingsum)), -grep("Count", names(tbl))]
  # print("loop through each target species")
   for(x in 1:length(unique(workingsum$SpeciesCode))) {
