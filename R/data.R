@@ -35,3 +35,19 @@
 #'     \item{tl}{total length in mm}
 #'     \item{age}{age determined from otolith reads assuming Jan 1 birthdate, in yrs}}
 "loch_blcr_2020_age"
+
+
+#' LTM Fish Lookup Table
+#'
+#' Species lookup table for freshwater fish. 
+#'
+#' @format A dataframe with 321 obs and 7 variables
+#' \describe{
+#'     \item{F_code}{Species field code}
+#'     \item{common_name}{common name}
+#'     \item{scientific_name}{binomial scientific name}
+#'     \item{eco_type}{categorical variable grouping species as "Exotic", "Fresh", or "Salt"}
+#'     \item{family_scientific}{family name, scientific (latin)}
+#'     \item{family_common}{family name, common}
+#'     \item{fwc_id}{unique identification number for species, can be used as primary key}}
+"fish_table"
