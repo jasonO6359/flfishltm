@@ -47,15 +47,6 @@ Create data summary tables
 ``` r
 data(newnans)
 newn_sum <- ltm.data.summary("Newnans", newnans)
-#> Joining with `by = join_by(Year, yr, Species)`
-#> Joining with `by = join_by(Year, yr, Species)`
-#> Joining with `by = join_by(Year, yr, Species)`
-#> Joining with `by = join_by(Year, yr, Species)`
-#> Joining with `by = join_by(Year, yr, Species)`
-#> Joining with `by = join_by(Year, yr, Species)`
-#> Joining with `by = join_by(Year, yr, Species)`
-#> Joining with `by = join_by(Year, yr, Species)`
-#> Joining with `by = join_by(Year, yr, Species)`
 ```
 
 Access summary tables

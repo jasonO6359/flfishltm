@@ -34,7 +34,7 @@ ltm.data.summary <- function(waterbodyname = "No Waterbody Specified",
                              printfigs = 0,
                              print_directory = getwd()) {
 # Import Data
-  print("Importing Data")
+ # print("Importing Data")
   ImpData <- function(datafile) {
       #datafile = "Electrofishing/LMB/Orange_LMB_2021.csv"
         if(typeof(file) == "list") {rawdat = data.frame(file)} else {
@@ -140,7 +140,7 @@ ltm.data.summary <- function(waterbodyname = "No Waterbody Specified",
   }
   
 # Create Summary Tables
-  print("Creating Summary Tables")
+  # print("Creating Summary Tables")
   process_data <- function(rawfile,OutTab = 0, name) {
     #Function to add missing years into final summary table outputs
     addgapyears <- function(sumTable) {
@@ -319,11 +319,17 @@ ltm.data.summary <- function(waterbodyname = "No Waterbody Specified",
       
       
       
-    annual_summary = a %>% dplyr::left_join(b) %>% dplyr::left_join(i) %>% dplyr::left_join(e) %>% dplyr::left_join(f) %>% 
-                       dplyr::left_join(c) %>% dplyr::left_join(d)  %>% dplyr::left_join(j) %>% dplyr::left_join(g) %>% dplyr::left_join(h) %>%
-                          dplyr::arrange(Species)
-    #annual_summary$num_cv = annual_summary$CPUE_number_SD/annual_summary$CPUE_number
-    #annual_summary$wt_cv = annual_summary$CPUE_weight_SD/annual_summary$CPUE_weight
+    annual_summary = a %>% 
+      dplyr::left_join(b, by = join_by(Year, yr, Species)) %>% 
+      dplyr::left_join(i, by = join_by(Year, yr, Species)) %>% 
+      dplyr::left_join(e, by = join_by(Year, yr, Species)) %>% 
+      dplyr::left_join(f, by = join_by(Year, yr, Species)) %>%
+      dplyr::left_join(c, by = join_by(Year, yr, Species)) %>% 
+      dplyr::left_join(d, by = join_by(Year, yr, Species)) %>% 
+      dplyr::left_join(j, by = join_by(Year, yr, Species)) %>% 
+      dplyr::left_join(g, by = join_by(Year, yr, Species)) %>% 
+      dplyr::left_join(h, by = join_by(Year, yr, Species)) %>%
+      dplyr::arrange(Species)
     
     
     # Generate Species History Table
@@ -395,7 +401,7 @@ ltm.data.summary <- function(waterbodyname = "No Waterbody Specified",
   }
 #Create Figures
 #processed_data = outlist$LMB
-  print("creating figures")
+ # print("creating figures")
   
   plot_figs <- function (processed_data, FigstoPrint = 0, printdirectory = getwd(), name = "No name Specified") {
       #require(ggplot2)
@@ -499,17 +505,17 @@ ltm.data.summary <- function(waterbodyname = "No Waterbody Specified",
        }
        
        if(FigstoPrint == 0) {
-         print("No Figures Printed")
+        # print("No Figures Printed")
        } else if(FigstoPrint == 1) {
-         print("Printing All Figures")
+       #  print("Printing All Figures")
          Ctfigs(processed_data, name)
          Wtfigs(processed_data, name)
          Sumfigs(processed_data, name)} else if(FigstoPrint ==2) {
-           print('Printing CPUE by number figures only')
+        #   print('Printing CPUE by number figures only')
            Ctfigs(processed_data, name)} else if(FigstoPrint == 3) {
-             print("Printing CPUE by wt figures only")
+         #    print("Printing CPUE by wt figures only")
              Wtfigs(processed_data, name)} else if(FigstoPrint == 4) {
-               print("printing summary figures only")
+          #     print("printing summary figures only")
                Sumfigs(processed_data, name)} else {print ("Incorrect Figure type selection")}
   }
   
@@ -519,8 +525,8 @@ ltm.data.summary <- function(waterbodyname = "No Waterbody Specified",
     OutTables1 = outtables
     PrintFigs1 = printfigs
     ImportedData = ImpData(FILE)
-    print(base::paste("Rows:",nrow(ImportedData)))
-    print(base::paste("Columns:",ncol(ImportedData)))
+   # print(base::paste("Rows:",nrow(ImportedData)))
+   # print(base::paste("Columns:",ncol(ImportedData)))
     if("community" %in% names(ImportedData)) {
       Data.proc = process_data(ImportedData$community,OutTables1,WaterbodyName1)
       plot_figs(Data.proc, PrintFigs1,print_directory,WaterbodyName1)
@@ -979,17 +985,21 @@ return(out)
 }
 guilds = import_guild_table()
 
-  #convert cpue table from wide to long
-   # cpue_long = orange_all$CPUE_number
-
+#convert cpue table from wide to long
 cpue_long = ltm_dataset$CPUE_number
-if(length(years) > 0) {cpue_long = cpue_long %>% dplyr::filter(yr %in% years)}
-cpue_long <- na.omit(cpue_long %>% gather(key="Species", value="CPUE", -Year, -yr))
+if(length(years) > 0) {cpue_long <- cpue_long %>% dplyr::filter(yr %in% years)}
+
+cpue_long <- 
+  cpue_long %>% 
+  gather(key="Species", value="CPUE", -Year, -yr) %>% 
+  na.omit()
 
 # join cpue table with guild table
-cpue_long = cpue_long %>% 
-  dplyr::left_join(guilds %>% dplyr::select(-SpeciesCode) %>% 
-              rename(Species = SpeciesCommon))
+cpue_long <-
+  cpue_long %>% 
+  dplyr::left_join(guilds %>% 
+                     dplyr::select(-SpeciesCode) %>% 
+                     rename(Species = SpeciesCommon))
 
 #percent composition formula
 percent_comp <- function(x) { x/sum(x)}
