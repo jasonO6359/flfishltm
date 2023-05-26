@@ -747,12 +747,39 @@ cpue.plot   <- function(datafile,
             }
             
           }
+          
+          internal_get_month <- function(data, date_field) {
+            formats <- 
+              data %>% 
+              pull({{ date_field }}) %>% 
+              lubridate::guess_formats(orders = c("mdy", "ymd")) %>% 
+              unique() %>% 
+              .[!stringr::str_detect(.,"O")]
+            
+            if(length(formats) > 1) {
+              cli::cli_abort("more than 1 date format detected")
+            } else if (formats[[1]] == "%m/%d/%Y") {
+              return(data %>%
+                       mutate(yr = lubridate::month(lubridate::mdy({{ date_field }}))) %>%
+                       pull(yr))
+            } else if (formats[[1]] == "%Y-%m-%d") {
+              return(data %>%
+                       mutate(yr = lubridate::month(lubridate::ymd({{ date_field }}))) %>%
+                       pull(yr))
+            } else {
+              cli::cli_abort("date format not recognized")
+            }
+            
+          }
   
 # Process ---------------------------------------------------------------------  
           workingdat <- 
             datafile$RawData %>% 
-            mutate(Year = internal_get_year(., Date)) %>% 
+            mutate(Year = ifelse(internal_get_month(., Date) == 1, 
+                                 internal_get_year(., Date) - 1, 
+                                 internal_get_year(., Date))) %>%
             mutate(SeasYr = base::paste0(Season,"-", Year))
+            
           
           od = workingdat
           
