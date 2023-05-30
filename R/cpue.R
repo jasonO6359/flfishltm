@@ -23,7 +23,7 @@
 #'   cpue(ct, "minutes")
 #'   
 #' # fish_data %>% 
-#' #   add_zero_count(c(site,minutes), species_name, ct) %>% #use [add_zero_count](add_zero_count.Rd) to account for missing absence data
+#' #   add_zero_count(c(site,minutes), species_name, ct) %>% #use [add_zero_count()]to account for missing absence data
 #' #   group_by(species_name) %>% 
 #' #   cpue(ct, "minutes")
 cpue <- function(data, count, effort) {
