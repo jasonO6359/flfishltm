@@ -4,14 +4,14 @@
 \alias{cpue}
 \title{Calculate Mean Catch-per-unit Effort (CPUE)}
 \usage{
-cpue(data, species, effort)
+cpue(data, count, effort)
 }
 \arguments{
 \item{data}{`data.frame` or `tibble` containing samples as rows, and species counts as columns along with an effort columnt}
 
-\item{species}{name of column (unquoted) for species for which CPUE is desired}
-
 \item{effort}{name of column (unquoted) specifying the sample effort value (typically minutes)}
+
+\item{species}{name of column (unquoted) for species for which CPUE is desired}
 }
 \value{
 named vector containing "Mean CPUE" and "SE" estimates
@@ -20,11 +20,22 @@ named vector containing "Mean CPUE" and "SE" estimates
 Calculate Mean Catch-per-unit Effort (CPUE)
 }
 \examples{
-fish_data <- tibble(BLUE = c(5, 2, 6, 4, 7,
-                             8, 6, 7, 2, 9),
-                    minutes = rep(10, 10))
+fish_data <- tibble(
+  site = c(1:5,3:7),
+  species_name = c(rep("BLUE", 5), rep("RESU", 5)),
+  ct = c(5, 2, 6, 4, 7,
+         8, 6, 7, 2, 9),
+  minutes = rep(10, 10))
+
 fish_data \%>\% 
-  cpue("BLUE", "minutes")
-
-
+  cpue(ct, "minutes") # can specify column name as either a symbol or character
+  
+fish_data \%>\% 
+  group_by(species_name) \%>\% # use dplyr::group_by to specify grouping variables.
+  cpue(ct, "minutes")
+  
+# fish_data \%>\% 
+#   add_zero_count(c(site,minutes), species_name, ct) \%>\% #use [add_zero_count](add_zero_count.Rd) to account for missing absence data
+#   group_by(species_name) \%>\% 
+#   cpue(ct, "minutes")
 }
