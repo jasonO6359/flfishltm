@@ -31,6 +31,7 @@ cpue <- function(data, count, effort) {
     dplyr::mutate(sample_CPUE = !!rlang::ensym(count)/!!rlang::ensym(effort))  %>%
     dplyr::summarise("mean_CPUE" = mean(sample_CPUE),
               "SE" = sd(sample_CPUE) / sqrt(n()),
-              "N" = dplyr::n())
+              "N" = dplyr::n(),
+              .groups = "keep")
 }
 
