@@ -8,16 +8,29 @@
 #' @export
 #'
 #' @examples
-#' fish_data <- tibble(BLUE = c(5, 2, 6, 4, 7,
-#'                              8, 6, 7, 2, 9),
-#'                     minutes = rep(10, 10))
+#' fish_data <- tibble(
+#'   site = c(1:5,3:7),
+#'   species_name = c(rep("BLUE", 5), rep("RESU", 5)),
+#'   ct = c(5, 2, 6, 4, 7,
+#'          8, 6, 7, 2, 9),
+#'   minutes = rep(10, 10))
+#' 
 #' fish_data %>% 
-#'   cpue("BLUE", "minutes")
-#' 
-#' 
-cpue <- function(data, species, effort) {
+#'   cpue(ct, "minutes") # can specify column name as either a symbol or character
+#'   
+#' fish_data %>% 
+#'   group_by(species_name) %>% # use dplyr::group_by to specify grouping variables.
+#'   cpue(ct, "minutes")
+#'   
+#' # fish_data %>% 
+#' #   add_zero_count(c(site,minutes), species_name, ct) %>% #use [add_zero_count](add_zero_count.Rd) to account for missing absence data
+#' #   group_by(species_name) %>% 
+#' #   cpue(ct, "minutes")
+cpue <- function(data, count, effort) {
   data %>% 
-    mutate(sample_CPUE = !!rlang::ensym(species)/!!rlang::ensym(effort))  %>%
-    summarise("Mean CPUE" = mean(sample_CPUE),
-              "SE" = sd(sample_CPUE) / sqrt(n()))
+    dplyr::mutate(sample_CPUE = !!rlang::ensym(count)/!!rlang::ensym(effort))  %>%
+    dplyr::summarise("mean_CPUE" = mean(sample_CPUE),
+              "SE" = sd(sample_CPUE) / sqrt(n()),
+              "N" = dplyr::n())
 }
+
