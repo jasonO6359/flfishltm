@@ -19,7 +19,9 @@ knitr::opts_chunk$set(
 `flfishltm` is stored in a custom repository on r-universe.dev, not the default CRAN repository. Therefore to use the standard `install.packages()` function, you must reference the `flfishltm` repository which is located at [https://jasono6359.r-universe.dev](https://jasono6359.r-universe.dev). 
 
 ```{r eval=FALSE}
-install.packages("flfishltm", repos = "https://jasono6359.r-universe.dev")
+install.packages("flfishltm",
+                 repos = "https://jasono6359.r-universe.dev", 
+                 dependencies = TRUE)
 ```
 
 To ease updating the package in the future, we recommend storing a persistent reference to the repository in in your user .Rprofile. This way the repository is available every time you start a new R session. To do this first call:
