@@ -22,3 +22,4 @@ The package can now be installed using
 ```
 install.packages(bin, repos = NULL, type = "binary")
 ```
+

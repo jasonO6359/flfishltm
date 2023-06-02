@@ -42,7 +42,7 @@ local({
 
 Then save and close .Rprofile. 
 
-Now restart your r session, if using Rstudio you can simply hit ctrl + shift + F10. Then you can check that the repository reference has been saved by running:
+Now restart your r session, if using Rstudio you can simply hit <kbd>ctrl</kbd> + <kbd>shift</kbd> + <kbd>F10</kbd>. Then you can check that the repository reference has been saved by running:
 
 ```{r eval=FALSE}
 install.packages("flfishltm")
