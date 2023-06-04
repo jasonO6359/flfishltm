@@ -12,8 +12,10 @@ Imports: tidyr, dplyr, tibble, ggplot2, viridis, stringr
 RoxygenNote: 7.2.3
 Suggests: 
     rmarkdown,
-    knitr
+    knitr,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Depends: 
     R (>= 3.5.0)
 License: MIT + file LICENSE
+Config/testthat/edition: 3
