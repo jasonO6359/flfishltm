@@ -11,7 +11,10 @@ test_that("each species has same number of observations", {
 test_that("nrow in output is equal to nSites * nSpecies", {
   fish_data <-
     new_fish_data() %>% 
-    add_zero_count(sample_ids = c(site,minutes), species_id = species_name, count = ct)
+    add_zero_count(sample_ids = c(site,minutes),
+                   species_id = species_name, 
+                   count = ct,
+                   format = "long")
   
   site_ct <- 
     new_fish_data() %>% 
