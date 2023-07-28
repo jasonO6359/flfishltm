@@ -20,7 +20,7 @@
 create_ltm_report <- function(dir_name, report_name = dir_name, dir_root = getwd()) {
   
   pth <- paste(dir_root, dir_name, sep="/")
-  
+  rel <- 
   if(!dir.exists(pth)) { 
     dir.create(pth)
   } else {
@@ -41,8 +41,11 @@ create_ltm_report <- function(dir_name, report_name = dir_name, dir_root = getwd
   }
   
   # create quarto template -----
-  quarto_file <- paste(pth, "/", report_name, ".qmd", sep="")
-  analysis_file <- paste(pth, "/R/", report_name, ".R", sep="")
+  quarto_file_name <- paste(report_name, ".qmd", sep="")
+  quarto_file <- paste(pth, "/", quarto_file_name, sep="")
+  
+  analysis_file_name <- paste(report_name, ".R", sep="")
+  analysis_file <- paste("R/", analysis_file_name, sep="")
   
   file.create(quarto_file)
   
@@ -290,7 +293,8 @@ print(PSD_plot)
   
   # create R template --------
   file.create(analysis_file)
-  cat(create_ltm_analysis_template(catch = report_name), file = analysis_file)
+  cat(create_ltm_analysis_template(catch = report_name), 
+      file = paste(pth, analysis_file, sep="/"))
 
  return(TRUE)
 }
