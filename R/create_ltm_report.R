@@ -1,6 +1,23 @@
-unlink("C:/Users/kyle.olivencia/OneDrive - Florida Fish and Wildlife Conservation/Computer/Desktop/test_report", recursive=TRUE)
 
-create_ltm_report <- function(dir_root = getwd(), dir_name = NA, report_name = NA) {
+#' Create a new LTM report template
+#'
+#' @param dir_name *string* specifying the name of the report directory to create
+#' @param report_name *string* specifying the report name, used in file names so avoid spaces
+#'   defaults to name specified in directory 
+#' @param dir_root *string* specifying the path to the root directory in which to create the report project. 
+#'   Defaults to the current working directory.
+#'
+#' @return boolean - returns `TRUE` if the function executes without error
+#' @export
+#'
+#' @examples
+#' 
+#' \dontrun{
+#' create_ltm_report(dir_name = "test_report", 
+#'                   report_name ="LakeDoe_LMB_2020")
+#' }
+#' 
+create_ltm_report <- function(dir_name, report_name = dir_name, dir_root = getwd()) {
   
   pth <- paste(dir_root, dir_name, sep="/")
   
@@ -12,7 +29,10 @@ create_ltm_report <- function(dir_root = getwd(), dir_name = NA, report_name = N
                              " directory"))
   }
   
-  if()
+  if(length(list.files(pth, pattern = "*.Rproj")) == 0) {
+    rstudioapi::initializeProject(pth)
+  }
+  
   # create subdirectories -----------------
   folders <- c("data", "figs", "tables", "R", "templates")
   
@@ -31,13 +51,14 @@ create_ltm_report <- function(dir_root = getwd(), dir_name = NA, report_name = N
     c("---",     
       "title: Annual Summary Form for LTM Systems",
       "format:",
+      "  html:",
+      "    code-fold: true",
+      "    echo: true",
+      "    embed-resources: true",
       "  docx:",
       "    code-line-numbers: false",
       "    reference-doc: templates/custom-reference-doc.docx",
       "    echo: false",
-      "  html:",
-      "    code-fold: true",
-      "    echo: true",
       "execute:",
       "  warning: false",
       "  cache: false",
@@ -163,7 +184,7 @@ Fish health codes were assigned to `r 100-fhc_nocode`% of the Largemouth Bass sa
 
 cpue_plot <- flfishltm::cpue.plot(dsum, 
                                   c(\"LMB\"), 
-                                  years = c(min(dat$year):max(dat$year)), fig_scale = 5)
+                                  years = c(min(catch$year):max(catch$year)), fig_scale = 5)
 
 ```
     ",
@@ -182,7 +203,7 @@ cpue_plot <- flfishltm::cpue.plot(dsum,
 
 cpue_plot <- 
   flfishltm::cpue.plot(dsum, c(\"LMB\"),
-                       years = c(min(dat$year): max(dat$year)),
+                       years = c(min(catch$year): max(catch$year)),
                        species_size_strata = list(
                          LMB = list(
                            \"Age-1\" = c(0,28),
@@ -192,7 +213,7 @@ cpue_plot <-
 
 trophy_plot <- 
   flfishltm::cpue.plot(dsum, c(\"LMB\"),
-                       years = c(min(dat$year): max(dat$year)),
+                       years = c(min(catch$year): max(catch$year)),
                        species_size_strata = list(LMB = list(
                          \"Mem-Trophy\" = c(50,100))),
                        fig_scale = 5)
@@ -211,7 +232,7 @@ trophy_plot <-
 #| fig-height: 8
 #| fig-width: 4
 
-cpue_plot <- flfishltm::len.dist(dsum, c(\"LMB\"), years = c((max(dat$year)-3):max(dat$year)), fig_scale = 5)
+cpue_plot <- flfishltm::len.dist(dsum, c(\"LMB\"), years = c((max(catch$year)-3):max(catch$year)), fig_scale = 5)
 
 ```
       ",
@@ -248,8 +269,9 @@ ggplot(data = RelWt %>% filter(year == yr, ID != \"ltm24913\"),
       append = TRUE,
       file = quarto_file)
   
-  ### rsd-plot -----------------------------------------------------------------
+### rsd-plot -----------------------------------------------------------------
   cat("
+  
 ```{r rsd-plot}
 #| label: fig-rsd
 #| fig-cap: Proportional stock density and relative stock density (preferred) of Largemouth Bass *Micropterus salmoides* at Orange Lake, FL from spring electrofishing samples. Standard surveys were not conducted between 2012 and 2015 due to low water conditions. {{< pagebreak >}}
@@ -261,24 +283,16 @@ print(PSD_plot)
       append = TRUE,
       file = quarto_file)
   
-  ### sav plot -----------------------------------------------------------------
+### sav plot -----------------------------------------------------------------
   
-  cat("
-![Submersed vegetation areal coverage (%) that was visually estimated during Spring LTM Largemouth Bass *Micropterus salmoides* electrofishing on Orange Lake from 2006 to 2021. No samples during 2012-2015 due to low water conditions.](figs/sav.png){#fig-sav}",
-      append = TRUE,
-      file = quarto_file)
+### CREATE sav function then include plot code here #####
   
   
   # create R template --------
   file.create(analysis_file)
-  cat(create_ltm_analysis_template(), file = analysis_file)
+  cat(create_ltm_analysis_template(catch = report_name), file = analysis_file)
+
+ return(TRUE)
 }
-
-
-# TEST -------------------------------------------------------------------------
-
-create_ltm_report("C:/Users/kyle.olivencia/OneDrive - Florida Fish and Wildlife Conservation/Computer/Desktop", "test_report", "kyles_report")
-
-
 
 

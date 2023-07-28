@@ -12,8 +12,15 @@
 #' @export
 #'
 #' @examples
+#' 
+#' \dontrun{
+#' create_ltm_analysis_template()
+#' }
+#' 
+#' 
 create_ltm_analysis_template <- function(catch_data = "qryFish_standard.csv",
-                                         age_data = NULL) {
+                                         age_data = NULL,
+                                         habitat_data = NULL) {
 paste("
 # Load Packages ------------------------------------------------------------
     
@@ -35,7 +42,13 @@ catch <- \"",catch_data,"\"
 
 age <- NULL
 
+habitat <- NULL
+
 # Process data -----------------------------------------------------------------
+
+if(stringr::str_sub(catch, -4) != \".csv\") {
+catch <- paste(catch, \".csv\", sep=\"\")
+}
 
 catch <- 
   paste(\"data/\",catch,sep=\"\") %>%
