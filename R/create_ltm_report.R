@@ -12,6 +12,7 @@ create_ltm_report <- function(dir_root = getwd(), dir_name = NA, report_name = N
                              " directory"))
   }
   
+  if()
   # create subdirectories -----------------
   folders <- c("data", "figs", "tables", "R", "templates")
   
@@ -152,7 +153,7 @@ Fish health codes were assigned to `r 100-fhc_nocode`% of the Largemouth Bass sa
    
   # create R template --------
   file.create(analysis_file)
-  
+  cat(create_ltm_analysis_template(), file = analysis_file)
 }
 
 
