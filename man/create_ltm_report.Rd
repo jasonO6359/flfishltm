@@ -7,16 +7,16 @@
 create_ltm_report(dir_name, report_name = dir_name, dir_root = getwd())
 }
 \arguments{
-\item{dir_name}{*string* specifying the name of the report directory to create}
+\item{dir_name}{\emph{string} specifying the name of the report directory to create}
 
-\item{report_name}{*string* specifying the report name, used in file names so avoid spaces
+\item{report_name}{\emph{string} specifying the report name, used in file names so avoid spaces
 defaults to name specified in directory}
 
-\item{dir_root}{*string* specifying the path to the root directory in which to create the report project. 
+\item{dir_root}{\emph{string} specifying the path to the root directory in which to create the report project.
 Defaults to the current working directory.}
 }
 \value{
-boolean - returns `TRUE` if the function executes without error
+boolean - returns \code{TRUE} if the function executes without error
 }
 \description{
 Create a new LTM report template

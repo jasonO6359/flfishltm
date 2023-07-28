@@ -7,20 +7,20 @@
 \format{
 A data frame with 13,326 rows and 40 variables:
 \describe{
-    \item{ID}{unique record ID #}
-    \item{WaterBody}{lake, river or other resource where data were collected, Factor}
-    \item{County}{FL County of Collection}
-    \item{Date}{collection date}
-    \item{Time}{collection time}
-    \item{SamplingType}{Sampling protocol: "Standard", "Haphazard", "NS-Random", etc TODO FILL IN ALL PROTOCOLS}
-    \item{Target}{Target species}
-    \item{Season}{Sampling season}
-    \item{Gear}{Sampling gear used}
-    \item{Effort}{Effort, expressed as time in seconds}
-    \item{DistanceM}{Distance covered during sample, in meters}
-    \item{Site}{site identification name or number}
-    \item{BeginLat}{Latitude of starting location, decimal degrees}
-    \item{BeginLong}{Longitude of starting location, decimal degrees}}
+\item{ID}{unique record ID #}
+\item{WaterBody}{lake, river or other resource where data were collected, Factor}
+\item{County}{FL County of Collection}
+\item{Date}{collection date}
+\item{Time}{collection time}
+\item{SamplingType}{Sampling protocol: "Standard", "Haphazard", "NS-Random", etc TODO FILL IN ALL PROTOCOLS}
+\item{Target}{Target species}
+\item{Season}{Sampling season}
+\item{Gear}{Sampling gear used}
+\item{Effort}{Effort, expressed as time in seconds}
+\item{DistanceM}{Distance covered during sample, in meters}
+\item{Site}{site identification name or number}
+\item{BeginLat}{Latitude of starting location, decimal degrees}
+\item{BeginLong}{Longitude of starting location, decimal degrees}}
 }
 \usage{
 newnans

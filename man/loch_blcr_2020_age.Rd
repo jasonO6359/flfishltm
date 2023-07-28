@@ -7,11 +7,11 @@
 \format{
 A dataframe with 103 obs and 5 variables
 \describe{
-    \item{WaterBody}{Waterbody where collection was made}
-    \item{collected}{collection date}
-    \item{Species}{Species code; BLCR = Black Crappie Pomoxis nigromaculatus}
-    \item{tl}{total length in mm}
-    \item{age}{age determined from otolith reads assuming Jan 1 birthdate, in yrs}}
+\item{WaterBody}{Waterbody where collection was made}
+\item{collected}{collection date}
+\item{Species}{Species code; BLCR = Black Crappie Pomoxis nigromaculatus}
+\item{tl}{total length in mm}
+\item{age}{age determined from otolith reads assuming Jan 1 birthdate, in yrs}}
 }
 \usage{
 loch_blcr_2020_age

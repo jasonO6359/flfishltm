@@ -7,7 +7,7 @@
 cpue(data, count, effort)
 }
 \arguments{
-\item{data}{`data.frame` or `tibble` containing samples as rows, and species counts as columns along with an effort columnt}
+\item{data}{\code{data.frame} or \code{tibble} containing samples as rows, and species counts as columns along with an effort columnt}
 
 \item{effort}{name of column (unquoted) specifying the sample effort value (typically minutes)}
 

@@ -11,7 +11,7 @@ See
 \details{
 \code{vignette("flfishltm", package="flfishltm")}
 
- intro to flfishltm for more details
+intro to flfishltm for more details
 }
 \section{flfishltm functions}{
 
