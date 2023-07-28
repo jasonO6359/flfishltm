@@ -98,7 +98,57 @@ append=TRUE,
 file=quarto_file)
   
    
-   
+## add body text ---------------------------------------------------------------
+
+cat("
+    
+## Written Summary
+
+Largemouth Bass *Micropterus salmoides* targeted sampling was conducted on `r lake` between `r text_start` and `r text_end`. `r n_tran` randomly selected transects were surveyed using a boat-mounted electrofishing unit according to FWC standard lentic protocols.
+
+`r n_tot` Largemouth Bass were collected across all transects. Catch-per-unit-effort (CPUE) was `r cpue` ± `r cpue_se`, <!-- which is similar to the CPUE observed in spring 2021, and higher than all other post-drought (2016-2020) samples (@fig-cpue). The higher catch rates these past two years have been driven primarily by strong recruitment in 2020 and 2021 (@fig-cpue-size-1). CPUE of Largemouth Bass larger than 30 cm was within the normal ranges observed between 2007 and 2022, and is down from the peak observed in 2019 (@fig-cpue-size-1). CPUE of memorable and trophy sized Largemouth Bass (\\> 50 cm) is similar to that observed in 2020 and 2021, but is lower than observed during 2017-2019 (@fig-cpue-size-2).
+
+There are noticeable peaks in the length distribution that likely correspond to age-1 (11-21 cm) and age-2 (22-36 cm) cohorts (@fig-length-freq). However, an age sample was not collected this year. --> The mean relative weight for the entire sample was `r round(mean(RelWt$relWt, na.rm = T),2)`%, <!-- which is slightly higher than the previous few years, but is within the normal ranges observed since 2007 (@fig-rw-1). Individuals less than 200 mm TL and greater than 400 mm TL tended to have higher relative weights than individuals between 300 and 400 mm TL (@fig-rw-2). --> The mean relative weight for Largemouth Bass greater than 30 cm was `r round(mean(RelWt30$relWt, na.rm = T),2)`%. Proportional stock density (PSD) was `r psd %>% round(2)*100`% and relative stock density-preferred was `r rsdp %>% round(2)*100`%, <!-- both of which are lower than in 2016-2020, but about the same as observed in 2021 (@fig-rsd).-->. 
+
+<!--
+Largemouth Bass *Micropterus salmoides* targeted sampling was conducted on `r lake` between `r text_start` and `r text_end`. `r n_tran` randomly selected transects were surveyed using a boat-mounted electrofishing unit according to FWC standard lentic protocols.
+
+`r n_tot` Largemouth Bass were collected across all transects. Catch-per-unit-effort (CPUE) was `r cpue` ± `r cpue_se`, which is similar to the CPUE observed in spring 2021, and higher than all other post-drought (2016-2020) samples (@fig-cpue). The higher catch rates these past two years have been driven primarily by strong recruitment in 2020 and 2021 (@fig-cpue-size-1). CPUE of Largemouth Bass larger than 30 cm was within the normal ranges observed between 2007 and 2022, and is down from the peak observed in 2019 (@fig-cpue-size-1). CPUE of memorable and trophy sized Largemouth Bass (\\> 50 cm) is similar to that observed in 2020 and 2021, but is lower than observed during 2017-2019 (@fig-cpue-size-2).
+
+There are noticeable peaks in the length distribution that likely correspond to age-1 (11-21 cm) and age-2 (22-36 cm) cohorts (@fig-length-freq). However, an age sample was not collected this year. The mean relative weight for the entire sample was `r round(mean(RelWt$relWt, na.rm = T),2)`%, which is slightly higher than the previous few years, but is within the normal ranges observed since 2007 (@fig-rw-1). Individuals less than 200 mm TL and greater than 400 mm TL tended to have higher relative weights than individuals between 300 and 400 mm TL (@fig-rw-2). The mean relative weight for Largemouth Bass greater than 30 cm was `r round(mean(RelWt30$relWt, na.rm = T),2)`%. Proportional stock density (PSD) was `r psd %>% round(2)*100`% and relative stock density-preferred was `r rsdp %>% round(2)*100`%, both of which are lower than in 2016-2020, but about the same as observed in 2021 (@fig-rsd).
+
+Fish health codes were assigned to `r 100-fhc_nocode`% of the Largemouth Bass sampled. `r fhc_sum %>% filter(year == max(fhc_sum$year), FishHealthCode == \"L\") %>% pull(n)` lesions and `r fhc_sum %>% filter(year == max(fhc_sum$year), FishHealthCode == \"S\") %>% pull(n)` skeletal deformities were observed among the `r fhc_sum %>% filter(year == max(fhc_sum$year)) %>% summarize(n = sum(n)) %>% pull(n)` bass sampled.
+
+-->
+## Noteworthy Observations
+
+<!--
+-   High catch rates of age-1 Largemouth Bass (\\< 280 mm) the past two years suggest that large year-classes were produced in 2020 and 2021.
+
+-   Very few Largemouth Bass were observed with any major health concerns. Of those that did, 3 had lesions, and 2 had skeletal deformities primarily affecting the dorsal fin.
+
+-   1 trophy Largemouth Bass was collected and tagged during sampling (Trophy 2005: 4546g/9 lbs 15 oz).
+-->
+
+## Influential Factors
+
+<!--
+
+-   Submerged aquatic vegetation coverage, dominated by *Hydrilla sp.*, coverage has expanded in recent years and was above the long-term average in 2021 (@fig-sav). *Hydrilla sp.* coverage was particularly high in Macintosh Bay and in southern portions of the lake near Peegee Run. High density *Hydrilla sp.* restricted our ability to sample near-shore habitats in some areas.
+
+-->
+
+## Deviations
+
+<!--
+
+-   Thirteen sites were samples at 120 pps, due to issues reaching target amps at 60 pps.
+
+-->    
+    
+    ",
+    append = TRUE,
+    file = quarto_file)
    
   # create R template --------
   file.create(analysis_file)
@@ -106,7 +156,7 @@ file=quarto_file)
 }
 
 
-# TEST ------
+# TEST -------------------------------------------------------------------------
 
 create_ltm_report("C:/Users/jason.oconnor/desktop", "test_report", "kyles_report")
 
