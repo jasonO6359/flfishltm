@@ -6,7 +6,7 @@ Date: 2021-07-06
 Authors@R: c(
     person("Jason","O'Connor", email = "jason.oconnor@myfwc.com", role = c("aut","cre"))
     )
-Version: 0.0.1.9003
+Version: 0.0.2
 Encoding: UTF-8
 Imports: tidyr, dplyr, tibble, ggplot2, viridis, stringr
 RoxygenNote: 7.2.3
