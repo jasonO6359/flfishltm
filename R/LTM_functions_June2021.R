@@ -1108,8 +1108,11 @@ return(list(Guild1 = guild_fig_data,
 #' @param filename = filename for saved figure
 #' @param fig_res = specify figure resolution
 #' @param fig_width = specify figure width
-#' @param fig_height = specify figure height  
-#' @return returns figure
+#' @param fig_height = specify figure height
+#' @param return_object *string* if "data" then function returns the dataset 
+#'   that is used to generate the figure, else if "ggplot" then function returns
+#'   ggplot object
+#' @return either summarised data or a ggplot object. Specify the return object type with `return_object`
 #' @examples
 #' data(newnans)
 #' newn_sum <- ltm.data.summary(file=newnans)
@@ -1120,7 +1123,13 @@ species.history <- function(LTMdataset,
                             filename = NA,
                             fig_res = NA,
                             fig_width = NA,
-                            fig_height = NA) {
+                            fig_height = NA,
+                            return_object = "data") {
+  
+  if(!return_object %in% c("data", "ggplot")) {
+    cli::cli_abort(c("invalid {.arg return_object}",
+                     "i" = "{.arg return_object} must be either \"data\" or \"ggplot\""))
+  }
   
   require(tidyr)
   require(tibble)
@@ -1186,7 +1195,11 @@ wid = ifelse(is.na(fig_width), length(unique(plotData$Year))*rs/1.75, fig_width)
       dev.off()
   }
 
-plotData
+  if(return_object == "data") {
+    return(plotData)
+  } else if(return_object == "ggplot") {
+    return(detection_plot)
+  }
 
 }
 
@@ -1243,7 +1256,6 @@ age.key <- function(dataset,age_column, length_column, length_unit = NA) {
     if(len_props[step] == 0) {prop_table[step,1] = 1} else {break}
     step = step+1
   }
-  
   
   return(prop_table)
   

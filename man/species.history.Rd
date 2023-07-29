@@ -10,7 +10,8 @@ species.history(
   filename = NA,
   fig_res = NA,
   fig_width = NA,
-  fig_height = NA
+  fig_height = NA,
+  return_object = "data"
 )
 }
 \arguments{
@@ -24,10 +25,14 @@ species.history(
 
 \item{fig_height}{= specify figure height}
 
+\item{return_object}{\emph{string} if "data" then function returns the dataset
+that is used to generate the figure, else if "ggplot" then function returns
+ggplot object}
+
 \item{ltm_dataset}{data, should be output from ltm.data.summary function}
 }
 \value{
-returns figure
+either summarised data or a ggplot object. Specify the return object type with \code{return_object}
 }
 \description{
 Create Species detection history plot
