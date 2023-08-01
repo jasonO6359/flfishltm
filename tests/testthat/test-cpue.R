@@ -1,4 +1,4 @@
-test_that("multiplication works", {
+test_that("CPUE Test 1", {
   
   fish_cpue <-
     new_fish_data() %>% 
@@ -10,8 +10,9 @@ test_that("multiplication works", {
 })
 
 test_that("Bluegill CPUE estimates for Newnans calculated correctly", {
-newn_cpue <- 
-  readRDS(test_path('fixtures', 'newnans.rds')) %>% 
+  load(test_path('fixtures', 'newnans.rds'))
+  newn_cpue <- 
+  newnans %>% 
   mutate(year = lubridate::year(lubridate::mdy(as.character(Date))),
          Effort = Effort/60) %>% 
   add_zero_count(sample_ids = c(ID:TransType, year), species_id = SpeciesCode, count = Count) %>% 
