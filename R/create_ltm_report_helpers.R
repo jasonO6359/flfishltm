@@ -233,6 +233,13 @@ pv_yr <- lubridate::year(end_date)-1
 pv_cpue <- dsum$CPUE_number %>% filter(yr == pv_yr-1) %>% select(\"Largemouth Bass\") %>% round(., 2)
 pv_cpue_se <- dsum$CPUE_number_SE %>% filter(yr == pv_yr-1) %>% select(\"Largemouth Bass\") %>% round(., 2)
 
+high_pps <- habitat %>% 
+              filter(Year == yr, PulseFreq == \"120 pps\") %>% 
+              count() %>% 
+              pull(n)
+
+
+
 write.csv(out, 
           file = paste(\"tables/\", stringr::str_replace(lake, \" \", \"_\"),
                        \"_\", target, \"_\", yr, \"_SizeStructure.csv\", sep=\"\"))   

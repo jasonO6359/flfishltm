@@ -188,6 +188,22 @@ Fish health codes were assigned to `r 100-fhc_nocode`% of the Largemouth Bass sa
     ",
       append = TRUE,
       file = quarto_file)
+
+  cat("
+```{r freq-dev}
+#| eval: !expr 'high_pps > 0'
+#| include: !expr 'high_pps > 0'
+#| echo: false
+#| output: asis
+
+cat(\"- \",high_pps, \" sites were sampled at 120pps, due to issues reaching target amps at 60 pps.\")
+
+
+```
+    ",
+      append = TRUE,
+      file = quarto_file) 
+  
   
   ## add figures -----------------------------------------------------------------
   
