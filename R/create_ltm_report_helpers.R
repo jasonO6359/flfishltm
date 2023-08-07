@@ -196,6 +196,7 @@ cpue <- dsum$CPUE_number[nrow(dsum$CPUE_number), \"Largemouth Bass\"] %>% round(
 cpue_se <- dsum$CPUE_number_SE[nrow(dsum$CPUE_number_SE), \"Largemouth Bass\"] %>% round(., 2)
 n_tot <- catch %>% filter(year == max(catch$year)) %>% summarise(total = sum(Count)) %>% pull(total)
 
+n_fhc <- fhc_sum %>% filter(year == max(fhc_sum$year), FishHealthCode1 != \"\")  %>% pull(n)
 fhc_s <- fhc_sum %>% filter(year == max(fhc_sum$year), FishHealthCode1 == \"S\") %>% pull(n)
 fhc_l <- fhc_sum %>% filter(year == max(fhc_sum$year), FishHealthCode1 == \"L\") %>% pull(n)
 fhc_f <- fhc_sum %>% filter(year == max(fhc_sum$year), FishHealthCode1 == \"F\") %>% pull(n)
