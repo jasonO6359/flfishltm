@@ -181,16 +181,12 @@ Fish health codes were assigned to `r 100-fhc_nocode`% of the Largemouth Bass sa
 
 ## Deviations
 
-
--   ***EXAMPLE: Thirteen sites were samples at 120 pps, due to issues reaching target amps at 60 pps.***
-
-    
-    ",
+",
       append = TRUE,
       file = quarto_file)
 
   cat("
-```{r freq-dev}
+```{r deviation-PulseFreq}
 #| eval: !expr 'high_pps > 0'
 #| include: !expr 'high_pps > 0'
 #| echo: false
