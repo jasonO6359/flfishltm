@@ -72,3 +72,21 @@ check_expected_columns <- function(input_table, expected_names) {
   
 }
 
+
+#' INTERNAL: Create a deprecation warning
+#'
+#' @return warning message
+#'
+#' @examples
+#' deprecated_function <- function() {
+#'   deprecate("new_function")
+#' }
+#' deprecated_function()
+deprecate <- function(new_function) {
+  calling_function <- deparse(sys.calls()[[sys.nframe()-1]])
+  if(is.null(calling_function)) calling_function = "NO PARENT"
+  cli::cli_alert_warning(c("{calling_function} is deprecated, please use ",
+                          "{.fun {new_function}}"," to silence this warning")) 
+  
+}
+
