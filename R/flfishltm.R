@@ -16,7 +16,7 @@
 #' \code{\link{len.dist}}
 #' 
 #' 
-#' @docType package
+#' @docType _PACKAGE
 #' @name flfishltm
 NULL
 #> NULL
