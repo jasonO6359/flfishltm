@@ -4,3 +4,4 @@ inst/doc
 .Rproj.user
 .Rhistory
 build_package.html
+/data/len_wt_reg.csv

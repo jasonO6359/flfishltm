@@ -42,3 +42,4 @@ ltm.import <- function(datafile) {
     # a <- ltm_import(datafile)
     # b <- ltm_import(newnans)
 }
+
