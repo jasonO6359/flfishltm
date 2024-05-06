@@ -36,6 +36,7 @@ species_history <- function(LTMdataset,
   # require(ggplot2)
   # require(stringr)
   
+  ## DEBUG ## LTMdataset = newn
   
   plotData <- 
     data.frame(LTMdataset$SpeciesHistory) %>% 
@@ -73,7 +74,8 @@ species_history <- function(LTMdataset,
                            fill = NULL,
                            label=total), 
               size =3) + 
-    geom_text(ggplot2::aes(x= -1, 
+    geom_text(data = yr_ct[1,],
+              ggplot2::aes(x= -1, 
                            y=-0.25, 
                            fill=NULL, 
                            label = "Total Species:"),
@@ -84,7 +86,8 @@ species_history <- function(LTMdataset,
                            fill = NULL,
                            label=total), 
               size =3) + 
-    geom_text(ggplot2::aes(x= nrow(yr_ct)+1, 
+    ggplot2::geom_text(data = sp_ct[1,],
+                       ggplot2::aes(x= nrow(yr_ct)+1, 
                            y=nrow(sp_ct)+1, 
                            fill=NULL, 
                            label = "Total\nYears"),
@@ -116,7 +119,8 @@ species_history <- function(LTMdataset,
   if(save == TRUE) {  
     tiff(fn, 
          height = ht, 
-         width = wid, res = rs,
+         width = wid, 
+         res = rs,
          compression = "lzw")
     print(detection_plot)
     dev.off()
