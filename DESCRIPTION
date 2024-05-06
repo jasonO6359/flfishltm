@@ -9,7 +9,7 @@ Authors@R: c(
 Version: 0.0.3.1
 Encoding: UTF-8
 Imports: tidyr, dplyr, tibble, ggplot2, viridis, stringr
-RoxygenNote: 7.3.0
+RoxygenNote: 7.3.1
 Roxygen: list(markdown = TRUE)
 Suggests: 
     rmarkdown,

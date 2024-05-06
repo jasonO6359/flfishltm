@@ -1,3 +1,6 @@
+load(test_path('fixtures', 'newnans.rds'))
+newn <- ltm.data.summary("newnans-test", newnans)
+
 test_that("CPUE Test 1", {
   
   fish_cpue <-
@@ -10,7 +13,7 @@ test_that("CPUE Test 1", {
 })
 
 test_that("Bluegill CPUE estimates for Newnans calculated correctly", {
-  load(test_path('fixtures', 'newnans.rds'))
+  
   newn_cpue <- 
   newnans %>% 
   mutate(year = lubridate::year(lubridate::mdy(as.character(Date))),
@@ -28,3 +31,10 @@ expect_equal(newn_cpue %>%
                pull(mean_CPUE), 1.428)
 })
 
+test_that("cpue_plot(): works", {
+  
+  expect_no_message({ 
+    cpue_plot(newn, speciesList = "BLUE") 
+    })
+
+})
