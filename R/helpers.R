@@ -90,3 +90,20 @@ deprecate <- function(new_function) {
   
 }
 
+
+################################################################################################################
+################################################################################################################
+#' Check if Outlier
+#' 
+#' Checks whether value is an outlier
+#' @param x vector of numerical values
+#'
+#' @return boolean
+#' @examples
+#' numbers = c(1:10,1:10,1:10,1000)
+#' numbers_outlier <- is.outlier(numbers)
+#' numbers[numbers_outlier]#'
+#' @export
+is.outlier <- function(x) {
+  return(x < quantile(x, 0.25) - 1.5 * IQR(x) | x > quantile(x, 0.75) + 1.5 * IQR(x))
+}
