@@ -1,10 +1,7 @@
-#' @import tidyr dplyr tibble 
-#' @import ggplot2 viridis stringr
 
 ## Functions -------------------------------------------------------------------
 
 # ltm.data.summary() moved to 'ltm.data.summary.R'
-
 
 
 #' Guild Composition Plot
@@ -21,6 +18,8 @@
 #' newn_sum <- ltm.data.summary(file=newnans)
 #' newnans_guild <- guild.comp(newn_sum)
 #' @export
+#' 
+#' 
 guild.comp <- function(ltm_dataset,
                        waterbody_list = list(),
                        years = list(),
