@@ -28,12 +28,14 @@ ltm.data.summary <- function(waterbodyname = "No Waterbody Specified",
   ImportedData = lds_ImpData(file) 
   
   if("community" %in% names(ImportedData)) {
+    type = "community"
     Data.proc = lds_process_data(ImportedData$community,outtables,waterbodyname)
-    lds_plot_figs(Data.proc,printfigs,print_directory,waterbodyname)
+    lds_plot_figs(Data.proc,type, printfigs,print_directory,waterbodyname)
   }
   if("LMB" %in% names(ImportedData)) {
+    type = "LMB"
     Data.proc = lds_process_data(ImportedData$LMB,outtables,waterbodyname)
-    lds_plot_figs(Data.proc,printfigs,print_directory,waterbodyname)
+    lds_plot_figs(Data.proc, type, printfigs,print_directory,waterbodyname)
   }
   return(Data.proc)
 }
@@ -372,7 +374,11 @@ lds_process_data <- function(rawfile,OutTab = 0, name) {
   return(processed_data)
 }
 
-lds_plot_figs <- function (processed_data, FigstoPrint = 0, printdirectory = getwd(), name = "No name Specified") {
+lds_plot_figs <- function (processed_data, 
+                           type,
+                           FigstoPrint = 0,
+                           printdirectory = getwd(),
+                           name = "No name Specified") {
   #require(ggplot2)
   #Function to create figures for CPUE by number for each species
   #processed_data = orange_all
@@ -488,7 +494,8 @@ lds_plot_figs <- function (processed_data, FigstoPrint = 0, printdirectory = get
     #  print("Printing All Figures")
     Ctfigs(processed_data, name)
     Wtfigs(processed_data, name)
-    Sumfigs(processed_data, name)} else if(FigstoPrint ==2) {
+    if(type == "community") Sumfigs(processed_data, name)
+    } else if(FigstoPrint ==2) {
       #   print('Printing CPUE by number figures only')
       Ctfigs(processed_data, name)} else if(FigstoPrint == 3) {
         #    print("Printing CPUE by wt figures only")
