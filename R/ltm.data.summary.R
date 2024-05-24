@@ -445,7 +445,7 @@ lds_plot_figs <- function (processed_data,
       Fig <- ggplot2::ggplot(data = processed_data$CPUE_weight, ggplot2::aes(x = Year, y = i_CPUE)) + geom_point() + 
         labs(title = base::paste(name,"-" ,simpleCap(names(processed_data$CPUE_weight)[i])), x = names(processed_data$CPUE_weight)[1], y = "Mean Catch Per Unit Effort by Weight (g/minute \u00b1 2 SE)" ) +
         theme_bw() +
-        scale_x_discrete(labels = c(substr(processed_data$CPUE_weight[,c(1)],1,4))) + 
+        scale_x_discrete(labels = c(substr(pull(processed_data$CPUE_weight,1),1,4))) + 
         geom_errorbar(ggplot2::aes(ymin = lower, ymax = upper, width = 0.2), size = 1) + 
         scale_y_continuous(limits = c(0, (max(na.omit(i_CPUE+(2*i_CPUE_SE)*1.05)))), expand = c(0,0)) +
         theme(plot.title = element_text(hjust = 0.5))
