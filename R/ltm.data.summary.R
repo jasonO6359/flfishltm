@@ -385,25 +385,32 @@ lds_plot_figs <- function (processed_data, FigstoPrint = 0, printdirectory = get
     }
     for (i in 3:ncol(processed_data$CPUE_number)) {
       #i=3
-      lower <- processed_data$CPUE_number[,c(i)]-(2*(processed_data$CPUE_number_SE[,i]))
+      i_CPUE <- processed_data$CPUE_number |> pull(i)
+      i_CPUE_SE <- processed_data$CPUE_number_SE |> pull(i)
+      lower <- i_CPUE - (2*(i_CPUE_SE))
       lower[lower < 0] <- 0
-      upper <- processed_data$CPUE_number[,c(i)]+(2*processed_data$CPUE_number_SE[,i])
-      xmn = min(na.omit(processed_data$CPUE_number$yr))
-      xmx =  max(na.omit(processed_data$CPUE_number$yr))
-      upperQ <- quantile(na.omit(processed_data$CPUE_number[,c(i)]),0.75)
-      med <- median(na.omit(processed_data$CPUE_number[,c(i)]))
-      lowerQ <- quantile(na.omit(processed_data$CPUE_number[,c(i)]),0.25)
-      Fig <- ggplot2::ggplot(data = processed_data$CPUE_number, ggplot2::aes(x = yr, y = processed_data$CPUE_number[,c(i)])) + 
+      #lower[is.na(lower)] <- 0
+      upper <- i_CPUE + ( 2 * i_CPUE_SE )
+      #upper[ is.na(upper) ] <- 0
+      xmn = min( na.omit( processed_data$CPUE_number$yr ) )
+      xmx =  max( na.omit( processed_data$CPUE_number$yr ) )
+      upperQ <- quantile(i_CPUE,0.75, na.rm = TRUE)
+      med <- median(i_CPUE, na.rm = TRUE)
+      lowerQ <- quantile(i_CPUE,0.25, na.rm = TRUE)
+      Fig <- ggplot2::ggplot(data = processed_data$CPUE_number, ggplot2::aes(x = yr, y = i_CPUE)) + 
         geom_point() + 
         labs(title = base::paste(name,"-" ,simpleCap(names(processed_data$CPUE_number)[i])),
              x = names(processed_data$CPUE_number)[1],
              y = "Mean Catch Per Unit Effort by Number (#/minute \u00b1 2 SE)" ) +
         theme_bw() +
-        scale_x_continuous(breaks= seq(xmn,xmx,1)) + #labels = c(substr(processed_data$CPUE_number[,c(1)],1,4))) + 
-        geom_errorbar(ggplot2::aes(ymin = lower, ymax = upper, width = 0.2), size = 1) + 
+        scale_x_continuous(breaks= seq(xmn,xmx,1)) + 
+        #labels = c(substr(processed_data$CPUE_number[,c(1)],1,4))) + 
+        geom_errorbar(ggplot2::aes(ymin = lower, ymax = upper), width = 0.2, size = 1) + 
         geom_ribbon(ggplot2::aes(ymax=upperQ,ymin=lowerQ),alpha=0.2, stat="identity", fill = "red") +
         geom_hline(yintercept = med, color = "dark red", lwd=1, lty=2) +
-        scale_y_continuous(limits = c(0, (max(na.omit(processed_data$CPUE_number[,c(i)]+(2*processed_data$CPUE_number_SE[,i])*1.05)))), expand = c(0,0)) +
+        scale_y_continuous(limits = c(0, 
+                                      max(i_CPUE+(2*i_CPUE_SE)*1.05, na.rm = TRUE)),
+                           expand = c( 0, 0 ) ) +
         theme(plot.title = element_text(hjust = 0.5))
       tiff(base::paste(printdirectory,"/",name,"-" ,names(processed_data$CPUE_number)[i],"-","#CPUE",".tiff", sep = ""), 
            height = 1800, 
@@ -423,16 +430,18 @@ lds_plot_figs <- function (processed_data, FigstoPrint = 0, printdirectory = get
                   sep="", collapse=" ")
     }
     for (i in 3:ncol(processed_data$CPUE_weight)) {
-      lower <- processed_data$CPUE_weight[,c(i)]-(2*(processed_data$CPUE_weight_SE[,i]))
+      i_CPUE <- processed_data$CPUE_weight |> pull(i)
+      i_CPUE_SE <- processed_data$CPUE_weight_SE |> pull(i)
+      lower <- i_CPUE-(2*(i_CPUE_SE))
       lower[lower < 0] <- 0
-      upper <- processed_data$CPUE_weight[,c(i)]+(2*processed_data$CPUE_weight_SE[,i])
+      upper <- i_CPUE+(2*i_CPUE_SE)
       
-      Fig <- ggplot2::ggplot(data = processed_data$CPUE_weight, ggplot2::aes(x = Year, y = processed_data$CPUE_weight[,c(i)])) + geom_point() + 
+      Fig <- ggplot2::ggplot(data = processed_data$CPUE_weight, ggplot2::aes(x = Year, y = i_CPUE)) + geom_point() + 
         labs(title = base::paste(name,"-" ,simpleCap(names(processed_data$CPUE_weight)[i])), x = names(processed_data$CPUE_weight)[1], y = "Mean Catch Per Unit Effort by Weight (g/minute \u00b1 2 SE)" ) +
         theme_bw() +
         scale_x_discrete(labels = c(substr(processed_data$CPUE_weight[,c(1)],1,4))) + 
         geom_errorbar(ggplot2::aes(ymin = lower, ymax = upper, width = 0.2), size = 1) + 
-        scale_y_continuous(limits = c(0, (max(na.omit(processed_data$CPUE_weight[,c(i)]+(2*processed_data$CPUE_weight_SE[,i])*1.05)))), expand = c(0,0)) +
+        scale_y_continuous(limits = c(0, (max(na.omit(i_CPUE+(2*i_CPUE_SE)*1.05)))), expand = c(0,0)) +
         theme(plot.title = element_text(hjust = 0.5))
       tiff(base::paste(printdirectory,"/",name,"-" ,names(processed_data$CPUE_weight)[i],"-","WtCPUE",".tiff", sep = ""), 
            height = 1800, 
