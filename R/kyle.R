@@ -1,9 +1,9 @@
 #' Kyle likes things
 #'
-#' @param obj the thing kyle likes
+#' @param obj *string* the thing kyle likes
 #'
 #' @return string
-#' @export
+#' @noRd
 #'
 #' @examples
 #' 

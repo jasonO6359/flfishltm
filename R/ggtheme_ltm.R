@@ -12,7 +12,10 @@
 #' theme_ltm()
 theme_ltm <- function() {
   create_theme_ltm <- function(){ 
+    
     font <- "sans"   #assign font family up front
+    
+    axis_col <- "#868686"
     
     theme_classic() %+replace%    #replace elements we want to change
       
@@ -40,13 +43,19 @@ theme_ltm <- function() {
           size = 9,                 #font size
           hjust = 1),               #right align
         
+        axis.line = element_line(color = axis_col),
+        
         axis.title = element_text(             #axis titles
           family = font,            #font family
-          size = 10),               #font size
+          size = 10,
+          color = axis_col),               #font size
         
         axis.text = element_text(              #axis text
           family = font,            #axis famuly
-          size = 9),                #font size
+          size = 9,
+          color = axis_col),                #font size
+        
+        axis.ticks = element_line(color = axis_col),
         
         # axis.text.x = element_text(            #margin for axis text
         #   margin=margin(5)),
@@ -55,9 +64,16 @@ theme_ltm <- function() {
         
         legend.position = "bottom",
         
+        legend.text = element_text(color = axis_col),
+        
         legend.box.margin = margin(-10,0,0,0),
         
-        legend.margin = margin(0,0,0,0)
+        legend.margin = margin(0,0,0,0),
+        
+        strip.background = element_rect(fill = NA,
+                                        color = axis_col),
+        
+        strip.text = element_text(color = "black")
         
       )
   }
