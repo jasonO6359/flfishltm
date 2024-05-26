@@ -42,7 +42,7 @@ ltm.data.summary <- function(waterbodyname = "No Waterbody Specified",
 
 
 lds_ImpData <- function(datafile) {
-  #datafile = "Electrofishing/LMB/Orange_LMB_2021.csv"
+
   if(typeof(datafile) == "list") {rawdat = data.frame(datafile)} else {
     rawdat <- data.frame(read.csv(datafile, header = TRUE, colClasses = c(
       ID = 'character',
@@ -128,7 +128,7 @@ lds_ImpData <- function(datafile) {
   }
   Targets = unique(rawdat$Target)
   
-  #Replace undesirable characters in Species Common Names
+  # Replace undesirable characters in Species Common Names
   rawdat$SpeciesCommon = stringr::str_replace_all(rawdat$SpeciesCommon, "/", "-")
   rawdat$SpeciesCommon = stringr::str_replace_all(rawdat$SpeciesCommon, " x ", "-")
   
@@ -146,19 +146,14 @@ lds_ImpData <- function(datafile) {
 }
 
 lds_process_data <- function(rawfile,OutTab = 0, name) {
-  #Function to add missing years into final summary table outputs
-  
-  
-  #create temp data
-  #rawfile=outlist$LMB
-  dat <- rawfile
-  # dat = ds
-  dat$Date <- as.Date(dat$Date, format = "%m/%d/%Y")
+  # create temp data
+    dat <- rawfile %>% 
+      dplyr::mutate(Date = as.Date(Date, format = "%m/%d/%Y"))
   
   #Create a factor variable to identify each sample year
   dat$LTM_sample <- ifelse(as.numeric(format(dat$Date, "%m")) %in% c(7:12),
-                           base::paste(format(as.Date(dat$Date, format="%d/%m/%Y"),"%Y"),"-",(as.numeric(format(as.Date(dat$Date, format="%d/%m/%Y"),"%Y"))+1)),
-                           base::paste((as.numeric(format(as.Date(dat$Date, format="%d/%m/%Y"),"%Y"))-1),"-",(as.numeric(format(as.Date(dat$Date, format="%d/%m/%Y"),"%Y"))))
+                           paste(format(as.Date(dat$Date, format="%d/%m/%Y"),"%Y"),"-",(as.numeric(format(as.Date(dat$Date, format="%d/%m/%Y"),"%Y"))+1)),
+                           paste((as.numeric(format(as.Date(dat$Date, format="%d/%m/%Y"),"%Y"))-1),"-",(as.numeric(format(as.Date(dat$Date, format="%d/%m/%Y"),"%Y"))))
   )
   
   #Remove rows without a date (should remove empty rows)
@@ -404,18 +399,18 @@ lds_plot_figs <- function (processed_data,
       med <- median(i_CPUE, na.rm = TRUE)
       lowerQ <- quantile(i_CPUE,0.25, na.rm = TRUE)
       Fig <- ggplot2::ggplot(data = processed_data$CPUE_number, ggplot2::aes(x = yr, y = i_CPUE)) + 
-        geom_point() + 
+        geom_point(na.rm = TRUE) + 
         labs(title = base::paste(name,"-" ,simpleCap(names(processed_data$CPUE_number)[i])),
              x = names(processed_data$CPUE_number)[1],
              y = "Mean Catch Per Unit Effort by Number (#/minute \u00b1 2 SE)" ) +
         theme_bw() +
         scale_x_continuous(breaks= seq(xmn,xmx,1)) + 
         #labels = c(substr(processed_data$CPUE_number[,c(1)],1,4))) + 
-        geom_errorbar(ggplot2::aes(ymin = lower, ymax = upper), width = 0.2, size = 1) + 
+        geom_errorbar(ggplot2::aes(ymin = lower, ymax = upper), width = 0.2, linewidth = 1) + 
         geom_ribbon(ggplot2::aes(ymax=upperQ,ymin=lowerQ),alpha=0.2, stat="identity", fill = "red") +
         geom_hline(yintercept = med, color = "dark red", lwd=1, lty=2) +
         scale_y_continuous(limits = c(0, 
-                                      max(i_CPUE+(2*i_CPUE_SE)*1.05, na.rm = TRUE)),
+                                      max(i_CPUE+(2*i_CPUE_SE)*1.1, na.rm = TRUE)),
                            expand = c( 0, 0 ) ) +
         theme(plot.title = element_text(hjust = 0.5))
       tiff(base::paste(printdirectory,"/",name,"-" ,names(processed_data$CPUE_number)[i],"-","#CPUE",".tiff", sep = ""), 
@@ -442,11 +437,12 @@ lds_plot_figs <- function (processed_data,
       lower[lower < 0] <- 0
       upper <- i_CPUE+(2*i_CPUE_SE)
       
-      Fig <- ggplot2::ggplot(data = processed_data$CPUE_weight, ggplot2::aes(x = Year, y = i_CPUE)) + geom_point() + 
+      Fig <- ggplot2::ggplot(data = processed_data$CPUE_weight, ggplot2::aes(x = Year, y = i_CPUE)) + 
+        geom_point(na.rm = TRUE) + 
         labs(title = base::paste(name,"-" ,simpleCap(names(processed_data$CPUE_weight)[i])), x = names(processed_data$CPUE_weight)[1], y = "Mean Catch Per Unit Effort by Weight (g/minute \u00b1 2 SE)" ) +
         theme_bw() +
         scale_x_discrete(labels = c(substr(pull(processed_data$CPUE_weight,1),1,4))) + 
-        geom_errorbar(ggplot2::aes(ymin = lower, ymax = upper, width = 0.2), size = 1) + 
+        geom_errorbar(ggplot2::aes(ymin = lower, ymax = upper, width = 0.2), linewidth = 1) + 
         scale_y_continuous(limits = c(0, (max(na.omit(i_CPUE+(2*i_CPUE_SE)*1.05)))), expand = c(0,0)) +
         theme(plot.title = element_text(hjust = 0.5))
       tiff(base::paste(printdirectory,"/",name,"-" ,names(processed_data$CPUE_weight)[i],"-","WtCPUE",".tiff", sep = ""), 
@@ -472,7 +468,7 @@ lds_plot_figs <- function (processed_data,
           if(sumname == "SimpsonsD") {titlename = "Modified Simpson's Diversity Index"
           yname = "Modified Simpsons Diversity Index (1/D)"}
       Fig <- ggplot2::ggplot(data = processed_data$Comp_Sum, ggplot2::aes(x = Year, y = processed_data$Comp_Sum[,c(i)])) + geom_line(ggplot2::aes(group = 1)) + 
-        geom_point() +
+        geom_point(na.rm = TRUE) +
         labs(title = base::paste(name,titlename, sep = "\n"), x = names(processed_data$Comp_Sum$Year)[1], y = yname) +
         theme_bw() +
         scale_x_discrete(labels = processed_data$Comp_Sum$Year) + 
