@@ -44,6 +44,71 @@ ltm.data.summary <- function(waterbodyname = "No Waterbody Specified",
 lds_ImpData <- function(datafile) {
 
   if(typeof(datafile) == "list") {rawdat = data.frame(datafile)} else {
+    
+    excel_indicators <- c("Waterbody", "TL_1CM_Group", "BatchWeight", "FhcId", "FishHealthCode", 
+                          "VettedId", "PrecheckId", "PurgeId", "Purge")
+    
+    raw_cols <- names(read.csv(datafile, header = TRUE))
+    
+    if( any(excel_indicators %in% raw_cols) ) {
+      cli::cli_alert_info("column names suggest data were exported to excel format then converted to csv. Column names are being converted to be consistent with data that are exported directly to csv format.")
+      rawdat <- data.frame(read.csv(datafile, header = TRUE,
+                                    colClasses = c(
+                                      ID = 'character',
+                                      Waterbody = 'factor',
+                                      County = 'character',
+                                      Date = 'character',
+                                      Time = 'character', #revist
+                                      SamplingType = 'factor',
+                                      Target = 'factor',
+                                      Season = 'factor',
+                                      Gear = 'factor',
+                                      Effort = 'integer',
+                                      DistanceM = 'numeric',
+                                      Site = 'character',
+                                      BeginLat = "numeric",
+                                      BeginLong = 'numeric',
+                                      Stratum = 'factor',
+                                      Grid = 'factor',
+                                      MiniGrid = 'factor',
+                                      Segment = 'factor',
+                                      NumSegments = 'character',
+                                      Reach = 'factor',
+                                      TransType = 'factor',
+                                      FS_ID = 'integer',
+                                      FM_ID = 'integer',
+                                      SpeciesCode = "factor",
+                                      SpeciesCommon = 'factor',
+                                      SpeciesScientific = 'factor',
+                                      EcoType = 'factor',
+                                      SizeClass ="factor",
+                                      Count = 'integer',
+                                      TotalLength = 'numeric',
+                                      TL_1CM_Group = 'integer',
+                                      TotalWeight = 'numeric',
+                                      IsBatchWt = 'factor',
+                                      BatchWeight = 'numeric',
+                                      ExcludeWt = 'factor',
+                                      Sex = 'factor',
+                                      Tag = 'character',
+                                      FishNote = 'character',
+                                      SequenceNote = 'character',
+                                      FhcId = "integer",
+                                      FishHealthCode = 'character',
+                                      FhcDescription = "character",
+                                      StatusId = "character",
+                                      Status = "character",
+                                      VettedId = "character",
+                                      Vetted = "character",
+                                      PrecheckId = "character",
+                                      Precheck = "character",
+                                      PurgeId = "character",
+                                      Purge = "character"))) |> 
+        dplyr::rename(WaterBody = Waterbody,
+                      TL_CM_Group = TL_1CM_Group,
+                      BatchWtValue = BatchWeight,
+                      FishHealthCodeId = FhcId)
+    } else {
     rawdat <- data.frame(read.csv(datafile, header = TRUE, colClasses = c(
       ID = 'character',
       WaterBody = 'factor',
@@ -74,7 +139,7 @@ lds_ImpData <- function(datafile) {
       EcoType = 'factor',
       SizeClass ="factor",
       Count = 'integer',
-      TotalLength = 'integer',
+      TotalLength = 'numeric',
       TL_CM_Group = 'integer',
       TotalWeight = 'numeric',
       IsBatchWt = 'factor',
@@ -84,47 +149,8 @@ lds_ImpData <- function(datafile) {
       Tag = 'character',
       FishNote = 'character',
       SequenceNote = 'character',
-      FishHealthCode = 'character')))
-    
-    # names(rawdat) = c("ID",
-    #                   "WaterBody" ,
-    #                   "County",
-    #                   "Date",
-    #                   "Time",
-    #                   "Type",
-    #                   "Target",
-    #                   "Season",
-    #                   "Gear" ,
-    #                   "Effort" ,
-    #                   "DistanceM",
-    #                   "Site"  ,
-    #                   "BeginLat",
-    #                   "BeginLong",
-    #                   "Stratum",
-    #                   "Grid",
-    #                   "Minigrid",
-    #                   "Segment",
-    #                   "NumSegs",
-    #                   "Reach",
-    #                   "TransType",
-    #                   "FS_ID",
-    #                   "FM_ID",
-    #                   "Species",
-    #                   "SpeciesCommon",
-    #                   "SpeciesSci",
-    #                   "Ecotype",
-    #                   "SizeClass",
-    #                   "Count",
-    #                   "TotalLength",
-    #                   "TL_CM_Group" ,
-    #                   "TotalWeight" ,
-    #                   "IsBatchWt",
-    #                   "BatchWtValue",
-    #                   "ExcludeWt",
-    #                   "Sex",
-    #                   "Tag",
-    #                   "FishNote",
-    #                   "SequenceNote")
+      FishHealthCodeId = 'character')))
+    }
   }
   Targets = unique(rawdat$Target)
   

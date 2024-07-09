@@ -8,10 +8,9 @@ test_that("ltm.data.summary runs successfully when passed a Rdata dataset", {
 
 test_that("ltm.data.summary runs successfully when passed a string pointing to csv", {
   
-  newnans_file <- testthat::test_path("fixtures", "newnans_subset.csv")
+  newnans_file <- testthat::test_path("fixtures", "newnans_lmb.csv")
   #undebug(lds_ImpData)
   expect_no_error(ltm.data.summary("Newnans Test2", newnans_file))
   
 })
-
 
