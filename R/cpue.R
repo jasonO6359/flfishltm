@@ -4,11 +4,12 @@
 #' @param species name of column (unquoted) for species for which CPUE is desired
 #' @param effort name of column (unquoted) specifying the sample effort value (typically minutes)
 #'
+#' @import lubridate
 #' @return named vector containing "Mean CPUE" and "SE" estimates
 #' @export
 #'
 #' @examples
-#' fish_data <- tibble(
+#' fish_data <- tibble::tibble(
 #'   site = c(1:5,3:7),
 #'   species_name = c(rep("BLUE", 5), rep("RESU", 5)),
 #'   ct = c(5, 2, 6, 4, 7,
@@ -19,7 +20,7 @@
 #'   cpue(ct, "minutes") # can specify column name as either a symbol or character
 #'   
 #' fish_data %>% 
-#'   group_by(species_name) %>% # use dplyr::group_by to specify grouping variables.
+#'   dplyr::group_by(species_name) %>% # use dplyr::group_by to specify grouping variables.
 #'   cpue(ct, "minutes")
 #'   
 #' # fish_data %>% 

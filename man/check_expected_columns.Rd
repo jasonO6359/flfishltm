@@ -7,9 +7,9 @@
 check_expected_columns(input_table, expected_names)
 }
 \arguments{
-\item{input_table}{}
+\item{input_table}{table object}
 
-\item{expected_names}{}
+\item{expected_names}{character vector specifying column names to check for}
 }
 \description{
 helper function triggers error if expected column names are missing

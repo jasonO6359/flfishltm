@@ -16,7 +16,7 @@ A dataframe with 321 obs and 7 variables
 \item{fwc_id}{unique identification number for species, can be used as primary key}}
 }
 \usage{
-fish_table
+data(fish_table)
 }
 \description{
 Species lookup table for freshwater fish.

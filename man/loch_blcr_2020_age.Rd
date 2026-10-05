@@ -14,7 +14,7 @@ A dataframe with 103 obs and 5 variables
 \item{age}{age determined from otolith reads assuming Jan 1 birthdate, in yrs}}
 }
 \usage{
-loch_blcr_2020_age
+data(loch_blcr_2020_age)
 }
 \description{
 Contains total length and ages for the aged subsample of Black Crappie
