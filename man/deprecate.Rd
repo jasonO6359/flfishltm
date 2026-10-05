@@ -12,9 +12,3 @@ warning message
 \description{
 INTERNAL: Create a deprecation warning
 }
-\examples{
-deprecated_function <- function() {
-  deprecate("new_function")
-}
-deprecated_function()
-}

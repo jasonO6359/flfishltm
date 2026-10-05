@@ -6,7 +6,7 @@ Date: 2021-07-06
 Authors@R: c(
     person("Jason","O'Connor", email = "jason.oconnor@myfwc.com", role = c("aut","cre"))
     )
-Version: 0.0.4
+Version: 2026.10.05.1
 Encoding: UTF-8
 Imports: 
     tibble,
@@ -16,8 +16,8 @@ Imports:
     ggplot2,
     viridis,
     stringr,
-    magrittr
-RoxygenNote: 7.3.1
+    magrittr,
+    lubridate
 Roxygen: list(markdown = TRUE)
 Suggests: 
     rmarkdown,
@@ -25,6 +25,7 @@ Suggests:
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Depends: 
-    R (>= 3.5.0)
+    R (>= 4.1.0)
 License: MIT + file LICENSE
 Config/testthat/edition: 3
+Config/roxygen2/version: 8.1.0

@@ -20,7 +20,7 @@ named vector containing "Mean CPUE" and "SE" estimates
 Calculate Mean Catch-per-unit Effort (CPUE)
 }
 \examples{
-fish_data <- tibble(
+fish_data <- tibble::tibble(
   site = c(1:5,3:7),
   species_name = c(rep("BLUE", 5), rep("RESU", 5)),
   ct = c(5, 2, 6, 4, 7,
@@ -31,7 +31,7 @@ fish_data \%>\%
   cpue(ct, "minutes") # can specify column name as either a symbol or character
   
 fish_data \%>\% 
-  group_by(species_name) \%>\% # use dplyr::group_by to specify grouping variables.
+  dplyr::group_by(species_name) \%>\% # use dplyr::group_by to specify grouping variables.
   cpue(ct, "minutes")
   
 # fish_data \%>\% 

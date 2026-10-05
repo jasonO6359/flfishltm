@@ -23,7 +23,7 @@ A dataframe with 321 obs and 7 variables
 \item{BeginLong}{Longitude of starting location, decimal degrees}}
 }
 \usage{
-sfr_fish
+data(sfr_fish)
 }
 \description{
 Dataset containing fish collection for Santa Fe River for the period 2006-

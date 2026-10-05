@@ -56,8 +56,8 @@ helper_addgapyears <- function(sumTable) {
 #'
 #' @description helper function triggers error if expected column names are missing
 #' 
-#' @param input_table 
-#' @param expected_names 
+#' @param input_table table object
+#' @param expected_names character vector specifying column names to check for
 #'
 #' @return NULL
 #' @export
@@ -83,11 +83,6 @@ check_expected_columns <- function(input_table, expected_names) {
 #'
 #' @return warning message
 #'
-#' @examples
-#' deprecated_function <- function() {
-#'   deprecate("new_function")
-#' }
-#' deprecated_function()
 deprecate <- function(new_function) {
   calling_function <- deparse(sys.calls()[[sys.nframe()-1]])
   if(is.null(calling_function)) calling_function = "NO PARENT"

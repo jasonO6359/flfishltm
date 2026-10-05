@@ -23,14 +23,3 @@ tibble
 \description{
 Add zero count data for species missing from sample
 }
-\examples{
-fish_data <- tibble(
-  site = c(1:5,3:7),
-  species_name = c(rep("BLUE", 5), rep("RESU", 5)),
-  ct = c(5, 2, 6, 4, 7,
-         8, 6, 7, 2, 9),
-  minutes = rep(10, 10))
-  
-fish_data \%>\% 
-  add_zero_count(sample_ids = c(site,minutes), species_id = species_name, count = ct)
-}

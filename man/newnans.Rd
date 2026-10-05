@@ -23,7 +23,7 @@ A data frame with 13,326 rows and 40 variables:
 \item{BeginLong}{Longitude of starting location, decimal degrees}}
 }
 \usage{
-newnans
+data(newnans)
 }
 \description{
 Dataset containing fish collection for Newnans Lake for the period 2006-

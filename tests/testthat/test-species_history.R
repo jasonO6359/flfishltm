@@ -14,7 +14,9 @@ test_that("return_object argument returns proper argument", {
   
   expect_true(is_tibble(species_history(newn, return_object = "data")))
   
-  expect_equal(class(species_history(newn, return_object = "ggplot")),
-               c("gg", "ggplot"))
+  expect_equal(
+    class(species_history(newn, return_object = "ggplot")),
+    c("ggplot2::ggplot", "ggplot", "ggplot2::gg", "S7_object", "gg")
+  )
   
 })
